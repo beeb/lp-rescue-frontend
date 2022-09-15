@@ -12,13 +12,14 @@
 		"format": "prettier --write ."
 	},
 	"devDependencies": {
-		"@babel/core": "^7.19.1",
 		"@sveltejs/adapter-auto": "next",
 		"@sveltejs/kit": "next",
 		"@tailwindcss/typography": "^0.5.7",
 		"@typescript-eslint/eslint-plugin": "^5.37.0",
 		"@typescript-eslint/parser": "^5.37.0",
-		"@walletconnect/web3-provider": "^1.8.0",
+		"@web3-onboard/core": "^2.8.3",
+		"@web3-onboard/injected-wallets": "^2.2.2",
+		"@web3-onboard/walletconnect": "^2.1.2",
 		"autoprefixer": "^10.4.11",
 		"daisyui": "^2.27.0",
 		"eslint": "^8.23.1",
@@ -28,7 +29,6 @@
 		"postcss": "^8.4.16",
 		"prettier": "^2.7.1",
 		"prettier-plugin-svelte": "^2.7.0",
-		"react-is": "^18.2.0",
 		"svelte": "^3.50.1",
 		"svelte-check": "^2.9.0",
 		"svelte-ethers-store": "^2.5.8",
@@ -36,8 +36,7 @@
 		"tailwindcss": "^3.1.8",
 		"tslib": "^2.4.0",
 		"typescript": "^4.8.3",
-		"vite": "^3.1.1",
-		"web3modal": "^1.9.9"
+		"vite": "^3.1.1"
 	},
 	"type": "module"
 }

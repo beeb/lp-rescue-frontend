@@ -1,52 +1,97 @@
 <script lang="ts">
 	import { onMount } from 'svelte'
 	import { ethers } from 'ethers'
-	import { signerAddress, defaultEvmStores } from 'svelte-ethers-store'
-	import Web3Modal from 'web3modal'
-	import WalletConnectProvider from '@walletconnect/web3-provider/dist/umd/index.min.js'
-
-	let web3Modal: Web3Modal | undefined
+	import { signerAddress, defaultEvmStores, chainId } from 'svelte-ethers-store'
+	import Onboard from '@web3-onboard/core'
+	import injectedModule from '@web3-onboard/injected-wallets'
+	import walletConnectModule from '@web3-onboard/walletconnect'
 
 	// TODO: get URL from network select dropdown
 	const defaultProvider = new ethers.providers.JsonRpcProvider('https://bsc-dataseed.binance.org')
+	const injected = injectedModule()
+	const walletConnect = walletConnectModule({
+		qrcodeModalOptions: {
+			mobileLinks: ['rainbow', 'metamask', 'argent', 'trust', 'imtoken', 'pillar']
+		},
+		connectFirstChainId: true
+	})
+	const onboard = Onboard({
+		wallets: [injected, walletConnect],
+		chains: [
+			{
+				id: 56,
+				token: 'BNB',
+				label: 'BNB Smart Chain',
+				rpcUrl: 'https://bsc-dataseed.binance.org'
+			},
+			{
+				id: 97,
+				token: 'tBNB',
+				label: 'BSC Testnet',
+				rpcUrl: 'https://data-seed-prebsc-1-s1.binance.org:8545'
+			}
+		],
+		connect: {
+			showSidebar: false
+		}
+	})
 
 	const connect = async () => {
-		const modalProvider = await web3Modal?.connect()
-		await defaultEvmStores.setProvider(modalProvider)
+		const wallets = await onboard.connectWallet()
+		if (wallets[0]) {
+			const provider = new ethers.providers.Web3Provider(wallets[0].provider, 'any')
+			await defaultEvmStores.setProvider(provider)
+		}
 	}
 
 	const disconnect = async () => {
-		if (web3Modal?.cachedProvider) {
-			web3Modal?.clearCachedProvider()
-		}
+		const [primaryWallet] = onboard.state.get().wallets
+		await onboard.disconnectWallet({ label: primaryWallet.label })
+		const previouslyConnectedWallets: string[] = JSON.parse(window.localStorage.getItem('connectedWallets') || '[]')
+		window.localStorage.setItem(
+			'connectedWallets',
+			JSON.stringify(previouslyConnectedWallets.filter((wallet) => wallet !== primaryWallet.label))
+		)
 		await defaultEvmStores.disconnect()
 		await defaultEvmStores.setProvider(defaultProvider)
 	}
 
 	onMount(async () => {
-		web3Modal = new Web3Modal({
-			cacheProvider: true,
-			theme: 'dark',
-			providerOptions: {
-				walletconnect: {
-					package: WalletConnectProvider,
-					options: {
-						rpc: {
-							56: 'https://bsc-dataseed.binance.org/'
-						}
-					}
-				}
-			}
+		const walletsSub = onboard.state.select('wallets')
+		const { unsubscribe: unsubscribeWallets } = walletsSub.subscribe((wallets) => {
+			const previouslyConnectedWallets: string[] = JSON.parse(window.localStorage.getItem('connectedWallets') || '[]')
+			const connectedWallets = wallets.map(({ label }) => label)
+			const allConnectedWallets = new Set([...previouslyConnectedWallets, ...connectedWallets])
+			window.localStorage.setItem('connectedWallets', JSON.stringify([...allConnectedWallets]))
 		})
 
-		if (web3Modal.cachedProvider) {
-			await connect()
+		const chainsSub = onboard.state.select('chains')
+		const { unsubscribe: unsubscribeChains } = chainsSub.subscribe((chains) => {
+			console.log(chains)
+		})
+
+		const previouslyConnectedWallets: string[] = JSON.parse(window.localStorage.getItem('connectedWallets') || '[]')
+		if (previouslyConnectedWallets.length) {
+			const wallets = await onboard.connectWallet({
+				autoSelect: { label: previouslyConnectedWallets[0], disableModals: true }
+			})
+			if (wallets[0]) {
+				const provider = new ethers.providers.Web3Provider(wallets[0].provider, 'any')
+				await defaultEvmStores.setProvider(provider)
+			}
+		} else {
+			await defaultEvmStores.setProvider(defaultProvider)
+		}
+
+		return () => {
+			unsubscribeWallets()
+			unsubscribeChains()
 		}
 	})
 </script>
 
 <h1 class="text-3xl mb-3">Welcome to Web3</h1>
-<p class="mb-3">{$signerAddress}</p>
+<p class="mb-3">{$signerAddress} {$chainId}</p>
 <p>
 	{#if $signerAddress}
 		<button type="button" class="btn" on:click={() => disconnect()}>Disconnect</button>

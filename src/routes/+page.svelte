@@ -58,35 +58,32 @@
 
 	onMount(async () => {
 		const walletsSub = onboard.state.select('wallets')
-		const { unsubscribe: unsubscribeWallets } = walletsSub.subscribe((wallets) => {
+		const { unsubscribe: unsubscribeWallets } = walletsSub.subscribe(async (wallets) => {
 			const previouslyConnectedWallets: string[] = JSON.parse(window.localStorage.getItem('connectedWallets') || '[]')
 			const connectedWallets = wallets.map(({ label }) => label)
 			const allConnectedWallets = new Set([...previouslyConnectedWallets, ...connectedWallets])
 			window.localStorage.setItem('connectedWallets', JSON.stringify([...allConnectedWallets]))
-		})
-
-		const chainsSub = onboard.state.select('chains')
-		const { unsubscribe: unsubscribeChains } = chainsSub.subscribe((chains) => {
-			console.log(chains)
+			if (wallets[0]) {
+				if (
+					wallets[0].chains[0].id !== ethers.utils.hexlify($chainId || 0) ||
+					ethers.utils.getAddress(wallets[0].accounts[0].address) !== $signerAddress
+				) {
+					const provider = new ethers.providers.Web3Provider(wallets[0].provider, 'any')
+					defaultEvmStores.setProvider(provider)
+				}
+			}
 		})
 
 		const previouslyConnectedWallets: string[] = JSON.parse(window.localStorage.getItem('connectedWallets') || '[]')
 		if (previouslyConnectedWallets.length) {
-			const wallets = await onboard.connectWallet({
+			await onboard.connectWallet({
 				autoSelect: { label: previouslyConnectedWallets[0], disableModals: true }
 			})
-			if (wallets[0]) {
-				const provider = new ethers.providers.Web3Provider(wallets[0].provider, 'any')
-				await defaultEvmStores.setProvider(provider)
-			}
 		} else {
 			await defaultEvmStores.setProvider(defaultProvider)
 		}
 
-		return () => {
-			unsubscribeWallets()
-			unsubscribeChains()
-		}
+		return () => unsubscribeWallets()
 	})
 </script>
 

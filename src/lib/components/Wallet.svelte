@@ -117,7 +117,7 @@
 	<div class="dropdown dropdown-end">
 		<label
 			tabindex="0"
-			class="btn rounded-full mb-1 gap-2 pl-5 pr-3"
+			class="btn btn-secondary rounded-full mb-1 gap-2 pl-5 pr-3"
 			class:btn-error={!chains[activeChain]}
 			for="chain-select"
 		>
@@ -129,10 +129,11 @@
 				<li>
 					<button
 						type="button"
-						class="!rounded-full"
-						class:bg-neutral={chain.id === activeChainHex}
-						class:hover:bg-neutral-focus={chain.id === activeChainHex}
-						class:focus:bg-neutral-focus={chain.id === activeChainHex}
+						class={`!rounded-full ${
+							chain.id === activeChainHex
+								? 'bg-base-100 hover:bg-base-200 focus:bg-base-200 border border-secondary'
+								: ''
+						}`}
 						on:click={async () => {
 							const success = await onboard.setChain({ chainId: chain.id })
 							if (success) {
@@ -148,10 +149,10 @@
 	</div>
 	<div class="flex gap-1">
 		{#if $signerAddress}
-			<button type="button" class="btn btn-circle" on:click={() => disconnect()}>
+			<button type="button" class="btn btn-circle btn-secondary" on:click={() => disconnect()}>
 				<CloseIcon class="h-6 w-6" />
 			</button>
-			<button type="button" class="btn gap-2 rounded-full" on:click={() => disconnect()}>
+			<button type="button" class="btn btn-secondary btn-outline gap-2 rounded-full" on:click={() => disconnect()}>
 				{addressEllipsis}
 			</button>
 		{:else}

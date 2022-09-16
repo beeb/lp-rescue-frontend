@@ -26,6 +26,7 @@ specifiers:
   svelte-ethers-store: ^2.5.8
   svelte-preprocess: ^4.10.7
   tailwindcss: ^3.1.8
+  theme-change: ^2.2.0
   tslib: ^2.4.0
   typescript: ^4.8.3
   unplugin-icons: ^0.14.9
@@ -57,6 +58,7 @@ devDependencies:
   svelte-ethers-store: 2.5.8
   svelte-preprocess: 4.10.7_snqnsttluzgwj6kbxzouwakc4q
   tailwindcss: 3.1.8_postcss@8.4.16
+  theme-change: 2.2.0
   tslib: 2.4.0
   typescript: 4.8.3
   unplugin-icons: 0.14.9_vite@3.1.1
@@ -3989,6 +3991,10 @@ packages:
 
   /text-table/0.2.0:
     resolution: {integrity: sha512-N+8UisAXDGk8PFXP4HAzVR9nbfmVJ3zYLAWiTIoqC5v5isinhr+r5uaO8+7r3BMfuNIufIsA7RdpVgacC2cSpw==}
+    dev: true
+
+  /theme-change/2.2.0:
+    resolution: {integrity: sha512-vvgZEEfmH3yZGq2bWHyzs2AOG1SRfNnCvWbEnPzGpdvvCmAWtOsEdg4H6k/OMapegG+LEQvQ76tQoN9B+FT7rg==}
     dev: true
 
   /tiny-glob/0.2.9:

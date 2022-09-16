@@ -32,8 +32,25 @@ module.exports = {
 			},
 			{
 				dark: {
-					...require('daisyui/src/colors/themes')['[data-theme=night]'],
-					'base-content': 'white'
+					primary: '#cba6f7',
+					secondary: '#f5c2e7',
+					accent: '#94e2d5',
+					neutral: '#45475a',
+					'neutral-content': '#b4befe',
+					'base-100': '#1e1e2e',
+					'base-200': '#181825',
+					'base-300': '#11111b',
+					'base-content': '#cdd6f4',
+					info: '#89b4fa',
+					success: '#a6e3a1',
+					warning: '#fab387',
+					error: '#f38ba8',
+
+					'--rounded-box': '1.5rem', // border radius rounded-box utility class, used in card and other large boxes
+					'--rounded-btn': '9999px', // border radius rounded-btn utility class, used in buttons and similar element
+					'--rounded-badge': '9999px', // border radius rounded-badge utility class, used in badges and similar
+					'--btn-text-case': 'none', // set default text transform for buttons
+					'--tab-radius': '9999px' // border radius of tabs
 				}
 			}
 		]

@@ -1,3 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.neo-shadow {
+  box-shadow:  22px 22px 46px #191927,
+             -22px -22px 46px #232335;
+}

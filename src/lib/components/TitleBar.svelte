@@ -20,9 +20,8 @@
 	})
 </script>
 
-<div class="navbar px-6 gap-6">
-	<a href="/" class="flex-none" title="Home page">Logo</a>
-	<a href="/" class="flex-1 text-2xl" title="Home page">LP+Rescue</a>
+<div class="navbar px-6 gap-6 fixed">
+	<a href="/" class="flex-1" title="Home page">Logo</a>
 	<div class="flex-none tooltip tooltip-left" data-tip="Toggle dark theme">
 		<button
 			type="button"

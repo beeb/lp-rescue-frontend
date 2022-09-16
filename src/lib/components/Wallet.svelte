@@ -86,9 +86,11 @@
 			const allConnectedWallets = new Set([...previouslyConnectedWallets, ...connectedWallets])
 			window.localStorage.setItem('connectedWallets', JSON.stringify([...allConnectedWallets]))
 			if (wallets[0]) {
+				console.log(wallets[0].chains[0])
 				if (
-					wallets[0].chains[0].id !== ethers.utils.hexlify($chainId || 0) ||
-					ethers.utils.getAddress(wallets[0].accounts[0].address) !== $signerAddress
+					wallets[0].chains[0].id !== ethers.utils.hexlify($chainId || 0) || // chainId changed
+					!chains[activeChain] || // we had selected an unsupported network
+					ethers.utils.getAddress(wallets[0].accounts[0].address) !== $signerAddress // the wallet changed
 				) {
 					activeChain = parseInt(wallets[0].chains[0].id, 16)
 					if (parseInt(wallets[0].chains[0].id) in chains) {

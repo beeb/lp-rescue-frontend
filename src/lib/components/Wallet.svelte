@@ -7,8 +7,10 @@
 	import injectedModule from '@web3-onboard/injected-wallets'
 	import walletConnectModule from '@web3-onboard/walletconnect'
 	import CloseIcon from 'virtual:icons/ri/close-line'
+	import ArrowDownIcon from 'virtual:icons/ri/arrow-down-s-line'
 
 	let activeChain: number = 56
+	$: activeChainHex = ethers.utils.hexlify(activeChain)
 
 	const chains: Record<number, Chain> = {
 		56: {
@@ -54,8 +56,11 @@
 	const connect = async () => {
 		const wallets = await onboard.connectWallet()
 		if (wallets[0]) {
-			const provider = new ethers.providers.Web3Provider(wallets[0].provider, 'any')
-			await defaultEvmStores.setProvider(provider)
+			activeChain = parseInt(wallets[0].chains[0].id, 16)
+			if (parseInt(wallets[0].chains[0].id) in chains) {
+				const provider = new ethers.providers.Web3Provider(wallets[0].provider, 'any')
+				await defaultEvmStores.setProvider(provider)
+			}
 		}
 	}
 
@@ -85,33 +90,66 @@
 					wallets[0].chains[0].id !== ethers.utils.hexlify($chainId || 0) ||
 					ethers.utils.getAddress(wallets[0].accounts[0].address) !== $signerAddress
 				) {
-					const provider = new ethers.providers.Web3Provider(wallets[0].provider, 'any')
-					defaultEvmStores.setProvider(provider)
+					activeChain = parseInt(wallets[0].chains[0].id, 16)
+					if (parseInt(wallets[0].chains[0].id) in chains) {
+						const provider = new ethers.providers.Web3Provider(wallets[0].provider, 'any')
+						defaultEvmStores.setProvider(provider)
+					}
 				}
 			}
 		})
 
+		await defaultEvmStores.setProvider(defaultProvider)
 		const previouslyConnectedWallets: string[] = JSON.parse(window.localStorage.getItem('connectedWallets') || '[]')
 		if (previouslyConnectedWallets.length) {
 			await onboard.connectWallet({
 				autoSelect: { label: previouslyConnectedWallets[0], disableModals: true }
 			})
-		} else {
-			await defaultEvmStores.setProvider(defaultProvider)
 		}
 
 		return () => unsubscribeWallets()
 	})
 </script>
 
-<div class="flex gap-4">
-	<div>Dropdown with chains here</div>
+<div class="flex gap-6">
+	<div class="dropdown dropdown-end">
+		<label
+			tabindex="0"
+			class="btn rounded-full mb-1 gap-2 pl-5 pr-3"
+			class:btn-error={!chains[activeChain]}
+			for="chain-select"
+		>
+			{(chains[activeChain] && chains[activeChain].label) || 'Wrong network'}
+			<ArrowDownIcon />
+		</label>
+		<ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-300 rounded-3xl w-52" id="chain-select">
+			{#each Object.values(chains) as chain}
+				<li>
+					<button
+						type="button"
+						class="!rounded-full"
+						class:bg-neutral={chain.id === activeChainHex}
+						class:hover:bg-neutral-focus={chain.id === activeChainHex}
+						class:focus:bg-neutral-focus={chain.id === activeChainHex}
+						on:click={async () => {
+							const success = await onboard.setChain({ chainId: chain.id })
+							if (success) {
+								activeChain = parseInt(chain.id, 16)
+							}
+						}}
+					>
+						{chain.label}
+					</button>
+				</li>
+			{/each}
+		</ul>
+	</div>
 	<div class="flex gap-1">
 		{#if $signerAddress}
 			<button type="button" class="btn btn-circle" on:click={() => disconnect()}>
 				<CloseIcon class="h-6 w-6" />
 			</button>
-			<button type="button" class="btn normal-case gap-2 rounded-full" on:click={() => disconnect()}>
+			<button type="button" class="btn gap-2 rounded-full" on:click={() => disconnect()}>
 				{addressEllipsis}
 			</button>
 		{:else}

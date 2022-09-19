@@ -3,33 +3,12 @@
 	import { ethers } from 'ethers'
 	import { signerAddress, defaultEvmStores, chainId } from 'svelte-ethers-store'
 	import { default as Onboard } from '@web3-onboard/core'
-	import type { Chain } from '@web3-onboard/common'
 	import injectedModule from '@web3-onboard/injected-wallets'
 	import walletConnectModule from '@web3-onboard/walletconnect'
+	import { activeChain, activeChainHex, chains, defaultProvider } from '$lib/stores/app'
 	import CloseIcon from 'virtual:icons/ri/close-line'
 	import ArrowDownIcon from 'virtual:icons/ri/arrow-down-s-line'
 
-	let activeChain: number = 56
-	$: activeChainHex = ethers.utils.hexlify(activeChain)
-
-	const chains: Record<number, Chain> = {
-		56: {
-			id: '0x38',
-			token: 'BNB',
-			label: 'BNB Smart Chain',
-			rpcUrl: 'https://bsc-dataseed.binance.org'
-		},
-		97: {
-			id: '0x61',
-			token: 'tBNB',
-			label: 'BSC Testnet',
-			rpcUrl: 'https://data-seed-prebsc-1-s1.binance.org:8545'
-		}
-	}
-
-	const defaultProvider = new ethers.providers.JsonRpcProvider(
-		chains[activeChain].rpcUrl || 'https://bsc-dataseed.binance.org'
-	)
 	const injected = injectedModule()
 	const walletConnect = walletConnectModule({
 		qrcodeModalOptions: {
@@ -56,7 +35,7 @@
 	const connect = async () => {
 		const wallets = await onboard.connectWallet()
 		if (wallets[0]) {
-			activeChain = parseInt(wallets[0].chains[0].id, 16)
+			$activeChain = parseInt(wallets[0].chains[0].id, 16)
 			if (parseInt(wallets[0].chains[0].id) in chains) {
 				const provider = new ethers.providers.Web3Provider(wallets[0].provider, 'any')
 				await defaultEvmStores.setProvider(provider)
@@ -66,12 +45,10 @@
 
 	const disconnect = async () => {
 		const [primaryWallet] = onboard.state.get().wallets
-		await onboard.disconnectWallet({ label: primaryWallet.label })
-		const previouslyConnectedWallets: string[] = JSON.parse(window.localStorage.getItem('connectedWallets') || '[]')
-		window.localStorage.setItem(
-			'connectedWallets',
-			JSON.stringify(previouslyConnectedWallets.filter((wallet) => wallet !== primaryWallet.label))
-		)
+		if (primaryWallet) {
+			await onboard.disconnectWallet({ label: primaryWallet.label })
+		}
+		window.localStorage.setItem('connectedWallets', JSON.stringify([]))
 		await defaultEvmStores.disconnect()
 		await defaultEvmStores.setProvider(defaultProvider)
 	}
@@ -86,13 +63,12 @@
 			const allConnectedWallets = new Set([...previouslyConnectedWallets, ...connectedWallets])
 			window.localStorage.setItem('connectedWallets', JSON.stringify([...allConnectedWallets]))
 			if (wallets[0]) {
-				console.log(wallets[0].chains[0])
 				if (
 					wallets[0].chains[0].id !== ethers.utils.hexlify($chainId || 0) || // chainId changed
-					!chains[activeChain] || // we had selected an unsupported network
+					!chains[$activeChain] || // we had selected an unsupported network
 					ethers.utils.getAddress(wallets[0].accounts[0].address) !== $signerAddress // the wallet changed
 				) {
-					activeChain = parseInt(wallets[0].chains[0].id, 16)
+					$activeChain = parseInt(wallets[0].chains[0].id, 16)
 					if (parseInt(wallets[0].chains[0].id) in chains) {
 						const provider = new ethers.providers.Web3Provider(wallets[0].provider, 'any')
 						defaultEvmStores.setProvider(provider)
@@ -118,10 +94,10 @@
 		<label
 			tabindex="0"
 			class="btn btn-secondary mb-1 gap-2 pl-5 pr-3"
-			class:btn-error={!chains[activeChain]}
+			class:btn-error={!chains[$activeChain]}
 			for="chain-select"
 		>
-			{(chains[activeChain] && chains[activeChain].label) || 'Wrong network'}
+			{(chains[$activeChain] && chains[$activeChain].label) || 'Wrong network'}
 			<ArrowDownIcon />
 		</label>
 		<ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-300 rounded-3xl w-52" id="chain-select">
@@ -130,14 +106,14 @@
 					<button
 						type="button"
 						class={`${
-							chain.id === activeChainHex
+							chain.id === $activeChainHex
 								? 'bg-base-100 hover:bg-base-200 focus:bg-base-200 border border-secondary'
 								: ''
 						}`}
 						on:click={async () => {
 							const success = await onboard.setChain({ chainId: chain.id })
 							if (success) {
-								activeChain = parseInt(chain.id, 16)
+								$activeChain = parseInt(chain.id, 16)
 							}
 						}}
 					>
@@ -155,7 +131,7 @@
 			<span class="btn btn-secondary btn-outline gap-2 btn-disabled bg-transparent">
 				{addressEllipsis}
 			</span>
-		{:else if chains[activeChain]}
+		{:else if chains[$activeChain]}
 			<button type="button" class="btn" on:click={() => connect()}>Connect</button>
 		{/if}
 	</div>

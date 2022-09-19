@@ -1,16 +1,28 @@
 <script lang="ts">
 	import { fly } from 'svelte/transition'
-	import { flip } from 'svelte/animate'
 	import TitleBar from '$lib/components/TitleBar.svelte'
 	import Steps from '$lib/components/Steps.svelte'
 	import Step0 from '$lib/components/Step0.svelte'
 	import Step1 from '$lib/components/Step1.svelte'
 	import Step2 from '$lib/components/Step2.svelte'
 	import Step3 from '$lib/components/Step3.svelte'
+	import { signerAddress } from 'svelte-ethers-store'
+	import { activeChain, chains } from '$lib/stores/app'
 	import ArrowRightIcon from 'virtual:icons/ri/arrow-right-s-line'
 	import ArrowLeftIcon from 'virtual:icons/ri/arrow-left-s-line'
 
 	let step: number = 0
+
+	$: nextEnabled = () => {
+		if (step === 0) {
+			return $signerAddress && chains[$activeChain]
+		} else if (step === 1) {
+			return $signerAddress && chains[$activeChain]
+		} else if (step === 2) {
+			return $signerAddress && chains[$activeChain]
+		}
+		return $signerAddress && chains[$activeChain]
+	}
 </script>
 
 <TitleBar />
@@ -53,6 +65,7 @@
 				on:click={() => {
 					step++
 				}}
+				disabled={!nextEnabled()}
 			>
 				Next <ArrowRightIcon />
 			</button>

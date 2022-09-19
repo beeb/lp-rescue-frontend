@@ -20,6 +20,7 @@ module.exports = {
 					'base-content': '#4c4f69',
 					info: '#1e66f5',
 					success: '#40a02b',
+					'success-content': '#ffffff',
 					warning: '#fe640b',
 					error: '#d20f39',
 

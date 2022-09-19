@@ -15,12 +15,16 @@
 		<h2 class="card-title text-3xl">Before we begin...</h2>
 		<div>First off, your wallet needs to be connected and on the right network.</div>
 		{#if $signerAddress && chains[$activeChain]}
-			<div class="flex text-success text-lg justify-center items-center gap-2">
-				<CheckIcon /> Everything seems correct
+			<div class="alert alert-success shadow-lg justify-center">
+				<div>
+					<CheckIcon /> Everything seems correct
+				</div>
 			</div>
 		{:else}
-			<div class="flex text-info text-lg justify-center items-center gap-2">
-				<InfoIcon /> Use the controls in the top-right to connect and set the network.
+			<div class="alert alert-info shadow-lg justify-center">
+				<div>
+					<InfoIcon /> Use the controls in the top-right to connect and set a valid network.
+				</div>
 			</div>
 		{/if}
 	</div>

@@ -16,8 +16,10 @@
 		{#if $signerAddress && chains[$activeChain]}
 			Fields
 		{:else}
-			<div class="flex text-error text-lg justify-center items-center gap-2">
-				<ErrorIcon /> Use the controls in the top-right to connect and set a valid network.
+			<div class="alert alert-error shadow-lg justify-center">
+				<div>
+					<ErrorIcon /> Use the controls in the top-right to connect and set a valid network.
+				</div>
 			</div>
 		{/if}
 	</div>

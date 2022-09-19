@@ -2,62 +2,15 @@
 	import { onMount } from 'svelte'
 	import { ethers } from 'ethers'
 	import { signerAddress, defaultEvmStores, chainId } from 'svelte-ethers-store'
-	import { default as Onboard } from '@web3-onboard/core'
-	import injectedModule from '@web3-onboard/injected-wallets'
-	import walletConnectModule from '@web3-onboard/walletconnect'
-	import { activeChain, activeChainHex, chains, defaultProvider } from '$lib/stores/app'
+	import { activeChain, activeChainHex, chains, defaultProvider, onboard, connect, disconnect } from '$lib/stores/app'
 	import CloseIcon from 'virtual:icons/ri/close-line'
 	import ArrowDownIcon from 'virtual:icons/ri/arrow-down-s-line'
-
-	const injected = injectedModule()
-	const walletConnect = walletConnectModule({
-		qrcodeModalOptions: {
-			mobileLinks: ['rainbow', 'metamask', 'argent', 'trust', 'imtoken', 'pillar']
-		},
-		connectFirstChainId: true
-	})
-	const onboard = Onboard({
-		wallets: [injected, walletConnect],
-		chains: Object.values(chains),
-		connect: {
-			showSidebar: false
-		},
-		accountCenter: {
-			desktop: {
-				enabled: false
-			},
-			mobile: {
-				enabled: false
-			}
-		}
-	})
-
-	const connect = async () => {
-		const wallets = await onboard.connectWallet()
-		if (wallets[0]) {
-			$activeChain = parseInt(wallets[0].chains[0].id, 16)
-			if (parseInt(wallets[0].chains[0].id) in chains) {
-				const provider = new ethers.providers.Web3Provider(wallets[0].provider, 'any')
-				await defaultEvmStores.setProvider(provider)
-			}
-		}
-	}
-
-	const disconnect = async () => {
-		const [primaryWallet] = onboard.state.get().wallets
-		if (primaryWallet) {
-			await onboard.disconnectWallet({ label: primaryWallet.label })
-		}
-		window.localStorage.setItem('connectedWallets', JSON.stringify([]))
-		await defaultEvmStores.disconnect()
-		await defaultEvmStores.setProvider(defaultProvider)
-	}
 
 	$: addressEllipsis = $signerAddress ? `${$signerAddress.slice(0, 6)}...${$signerAddress.slice(-4)}` : ''
 
 	onMount(async () => {
 		const walletsSub = onboard.state.select('wallets')
-		const { unsubscribe: unsubscribeWallets } = walletsSub.subscribe(async (wallets) => {
+		const { unsubscribe } = walletsSub.subscribe(async (wallets) => {
 			const previouslyConnectedWallets: string[] = JSON.parse(window.localStorage.getItem('connectedWallets') || '[]')
 			const connectedWallets = wallets.map(({ label }) => label)
 			const allConnectedWallets = new Set([...previouslyConnectedWallets, ...connectedWallets])
@@ -85,7 +38,7 @@
 			})
 		}
 
-		return () => unsubscribeWallets()
+		return () => unsubscribe()
 	})
 </script>
 

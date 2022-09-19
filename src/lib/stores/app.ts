@@ -6,14 +6,16 @@ import injectedModule from '@web3-onboard/injected-wallets'
 import walletConnectModule from '@web3-onboard/walletconnect'
 import { defaultEvmStores } from 'svelte-ethers-store'
 
-const defaultChain = parseInt(import.meta.env.VITE_DEFAULT_CHAIN || '56')
+export type SupportedChains = 56 | 97
+
+const defaultChain: SupportedChains = parseInt(import.meta.env.VITE_DEFAULT_CHAIN || '56') as SupportedChains
 
 export const dark: Writable<boolean> = writable(false)
 
 export const activeChain: Writable<number> = writable(defaultChain)
 export const activeChainHex = derived(activeChain, ($activeChain) => ethers.utils.hexlify($activeChain))
 
-export const chains: Record<number, Chain> = {
+export const chains: Record<SupportedChains, Chain> = {
 	56: {
 		id: '0x38',
 		token: 'BNB',

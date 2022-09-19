@@ -147,15 +147,15 @@
 			{/each}
 		</ul>
 	</div>
-	<div class="flex gap-1">
+	<div class="flex gap-1 items-center">
 		{#if $signerAddress}
-			<button type="button" class="btn btn-circle btn-secondary" on:click={() => disconnect()}>
+			<button type="button" class="btn btn-sm btn-circle btn-secondary" on:click={() => disconnect()}>
 				<CloseIcon class="h-6 w-6" />
 			</button>
-			<button type="button" class="btn btn-secondary btn-outline gap-2" on:click={() => disconnect()}>
+			<span class="btn btn-secondary btn-outline gap-2 btn-disabled bg-transparent">
 				{addressEllipsis}
-			</button>
-		{:else}
+			</span>
+		{:else if chains[activeChain]}
 			<button type="button" class="btn" on:click={() => connect()}>Connect</button>
 		{/if}
 	</div>

@@ -25,16 +25,13 @@
 	<div class="flex-none tooltip tooltip-left" data-tip="Toggle dark theme">
 		<button
 			type="button"
-			class="btn btn-circle btn-outline"
+			class="btn btn-sm btn-circle btn-outline gap-2 px-7 flex-nowrap"
 			data-toggle-theme="light,dark"
 			data-act-class="dark-enabled"
 			aria-label="Toggle dark theme"
 		>
-			{#if $dark}
-				<SunIcon />
-			{:else}
-				<MoonIcon />
-			{/if}
+			<span class:opacity-50={$dark}><SunIcon /></span>
+			<span class:opacity-50={!$dark}><MoonIcon /></span>
 		</button>
 	</div>
 	<div class="flex-none">

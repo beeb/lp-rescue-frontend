@@ -2,7 +2,26 @@
 @tailwind components;
 @tailwind utilities;
 
-.neo-shadow {
-  box-shadow:  22px 22px 46px #191927,
-             -22px -22px 46px #232335;
+:root {
+  --onboard-connect-header-background: hsl(var(--b1));
+  --onboard-connect-header-color: hsl(var(--bc));
+  --onboard-close-button-background: #0000;
+  --onboard-close-button-color: hsl(var(--bc));
+  --onboard-wallet-button-background: #0000;
+  --onboard-wallet-button-background-hover: hsl(var(--b3));
+  --onboard-wallet-button-color-hover: hsl(var(--bc));
+  --onboard-wallet-button-color: hsl(var(--bc));
+  --onboard-wallet-button-border-color: hsl(var(--bc));
+  --onboard-wallet-app-icon-border-color: hsl(var(--bc));
+  --onboard-success-100: hsla(var(--su) / 0.5);
+  --onboard-success-200: hsl(var(--su));
+  --onboard-success-500: hsl(var(--su));
+  --onboard-success-600: hsl(var(--suc));
+  --onboard-main-scroll-container-background: hsl(var(--b1));
+  --onboard-modal-background: hsl(var(--b1));
+  --onboard-modal-color: hsl(var(--bc));
+  --onboard-action-required-modal-background: hsl(var(--b1));
+  --onboard-primary-100: hsl(var(--b3));
+  --onboard-primary-500: hsl(var(--p));
+  --onboard-gray-700: hsl(var(--bc));
 }

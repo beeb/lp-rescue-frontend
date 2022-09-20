@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte'
-	import { ethers } from 'ethers'
-	import { signerAddress, defaultEvmStores, chainId } from 'svelte-ethers-store'
+	import { signerAddress, defaultEvmStores } from 'svelte-ethers-store'
 	import {
 		activeChain,
 		activeChainHex,

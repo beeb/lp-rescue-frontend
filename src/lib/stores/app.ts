@@ -1,10 +1,10 @@
-import { writable, derived, type Writable } from 'svelte/store'
+import { writable, derived, get, type Writable } from 'svelte/store'
 import type { Chain } from '@web3-onboard/common'
 import { ethers } from 'ethers'
-import { default as Onboard } from '@web3-onboard/core'
+import { default as Onboard, type WalletState } from '@web3-onboard/core'
 import injectedModule from '@web3-onboard/injected-wallets'
 import walletConnectModule from '@web3-onboard/walletconnect'
-import { defaultEvmStores } from 'svelte-ethers-store'
+import { defaultEvmStores, chainId, signerAddress } from 'svelte-ethers-store'
 
 export const chains: Record<number, Chain> = {
 	56: {
@@ -58,12 +58,33 @@ export const onboard = Onboard({
 	}
 })
 
+export const onWalletChange = async (wallets: WalletState[]) => {
+	const previouslyConnectedWallets: string[] = JSON.parse(window.localStorage.getItem('connectedWallets') || '[]')
+	const connectedWallets = wallets.map(({ label }) => label)
+	const allConnectedWallets = new Set([...previouslyConnectedWallets, ...connectedWallets])
+	window.localStorage.setItem('connectedWallets', JSON.stringify([...allConnectedWallets]))
+	if (wallets[0]) {
+		if (
+			wallets[0].chains[0].id !== ethers.utils.hexlify(get(chainId) || 0) || // chainId changed
+			!chains[get(activeChain)] || // we had selected an unsupported network
+			ethers.utils.getAddress(wallets[0].accounts[0].address) !== get(signerAddress) // the wallet changed
+		) {
+			const chainIdTemp = parseInt(wallets[0].chains[0].id, 16)
+			activeChain.set(chainIdTemp)
+			if (isValidChainId(chainIdTemp)) {
+				const provider = new ethers.providers.Web3Provider(wallets[0].provider, 'any')
+				defaultEvmStores.setProvider(provider)
+			}
+		}
+	}
+}
+
 export const connect = async () => {
 	const wallets = await onboard.connectWallet()
 	if (wallets[0]) {
-		const chainId = parseInt(wallets[0].chains[0].id, 16)
-		activeChain.set(chainId)
-		if (isValidChainId(chainId)) {
+		const chainIdTemp = parseInt(wallets[0].chains[0].id, 16)
+		activeChain.set(chainIdTemp)
+		if (isValidChainId(chainIdTemp)) {
 			const provider = new ethers.providers.Web3Provider(wallets[0].provider, 'any')
 			await defaultEvmStores.setProvider(provider)
 		}

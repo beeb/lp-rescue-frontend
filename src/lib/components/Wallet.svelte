@@ -10,7 +10,8 @@
 		onboard,
 		connect,
 		disconnect,
-		isValidChainId
+		isValidChainId,
+		onWalletChange
 	} from '$lib/stores/app'
 	import CloseIcon from 'virtual:icons/ri/close-line'
 	import ArrowDownIcon from 'virtual:icons/ri/arrow-down-s-line'
@@ -19,26 +20,7 @@
 
 	onMount(async () => {
 		const walletsSub = onboard.state.select('wallets')
-		const { unsubscribe } = walletsSub.subscribe(async (wallets) => {
-			const previouslyConnectedWallets: string[] = JSON.parse(window.localStorage.getItem('connectedWallets') || '[]')
-			const connectedWallets = wallets.map(({ label }) => label)
-			const allConnectedWallets = new Set([...previouslyConnectedWallets, ...connectedWallets])
-			window.localStorage.setItem('connectedWallets', JSON.stringify([...allConnectedWallets]))
-			if (wallets[0]) {
-				if (
-					wallets[0].chains[0].id !== ethers.utils.hexlify($chainId || 0) || // chainId changed
-					!chains[$activeChain] || // we had selected an unsupported network
-					ethers.utils.getAddress(wallets[0].accounts[0].address) !== $signerAddress // the wallet changed
-				) {
-					const chainId = parseInt(wallets[0].chains[0].id, 16)
-					$activeChain = chainId
-					if (isValidChainId(chainId)) {
-						const provider = new ethers.providers.Web3Provider(wallets[0].provider, 'any')
-						defaultEvmStores.setProvider(provider)
-					}
-				}
-			}
-		})
+		const { unsubscribe } = walletsSub.subscribe(onWalletChange)
 
 		await defaultEvmStores.setProvider(defaultProvider)
 		const previouslyConnectedWallets: string[] = JSON.parse(window.localStorage.getItem('connectedWallets') || '[]')
@@ -56,7 +38,7 @@
 	<div class="dropdown dropdown-end">
 		<label
 			tabindex="0"
-			class="btn btn-secondary mb-1 gap-2 pr-3"
+			class="btn btn-primary mb-1 gap-2 pr-3"
 			class:btn-error={!chains[$activeChain]}
 			for="chain-select"
 		>
@@ -73,7 +55,7 @@
 						type="button"
 						class={`${
 							chain.id === $activeChainHex
-								? 'bg-base-100 hover:bg-base-200 focus:bg-base-200 border border-secondary'
+								? 'bg-base-100 hover:bg-base-200 focus:bg-base-200 border border-primary'
 								: ''
 						}`}
 						on:click={async () => {
@@ -93,10 +75,10 @@
 	</div>
 	<div class="flex gap-1 items-center">
 		{#if $signerAddress}
-			<button type="button" class="btn btn-sm btn-circle btn-secondary" on:click={() => disconnect()}>
+			<button type="button" class="btn btn-sm btn-circle btn-primary" on:click={() => disconnect()}>
 				<CloseIcon class="h-6 w-6" />
 			</button>
-			<span class="btn btn-secondary btn-outline gap-2 btn-disabled bg-transparent">
+			<span class="btn btn-primary btn-outline gap-2 btn-disabled bg-transparent">
 				{addressEllipsis}
 			</span>
 		{:else if chains[$activeChain]}

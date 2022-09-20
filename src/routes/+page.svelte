@@ -50,7 +50,7 @@
 		{#if step > 0}
 			<button
 				type="button"
-				class="btn btn-secondary btn-outline gap-1 pl-3"
+				class="btn btn-primary btn-outline gap-1 pl-3"
 				on:click={() => {
 					step--
 				}}
@@ -61,7 +61,7 @@
 		{#if step < 3}
 			<button
 				type="button"
-				class="btn btn-secondary gap-1 pr-3"
+				class="btn btn-primary gap-1 pr-3"
 				on:click={() => {
 					step++
 				}}

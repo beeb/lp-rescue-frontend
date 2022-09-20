@@ -2,7 +2,16 @@
 	import { onMount } from 'svelte'
 	import { ethers } from 'ethers'
 	import { signerAddress, defaultEvmStores, chainId } from 'svelte-ethers-store'
-	import { activeChain, activeChainHex, chains, defaultProvider, onboard, connect, disconnect } from '$lib/stores/app'
+	import {
+		activeChain,
+		activeChainHex,
+		chains,
+		defaultProvider,
+		onboard,
+		connect,
+		disconnect,
+		isValidChainId
+	} from '$lib/stores/app'
 	import CloseIcon from 'virtual:icons/ri/close-line'
 	import ArrowDownIcon from 'virtual:icons/ri/arrow-down-s-line'
 
@@ -21,8 +30,9 @@
 					!chains[$activeChain] || // we had selected an unsupported network
 					ethers.utils.getAddress(wallets[0].accounts[0].address) !== $signerAddress // the wallet changed
 				) {
-					$activeChain = parseInt(wallets[0].chains[0].id, 16)
-					if (parseInt(wallets[0].chains[0].id) in chains) {
+					const chainId = parseInt(wallets[0].chains[0].id, 16)
+					$activeChain = chainId
+					if (isValidChainId(chainId)) {
 						const provider = new ethers.providers.Web3Provider(wallets[0].provider, 'any')
 						defaultEvmStores.setProvider(provider)
 					}
@@ -46,10 +56,13 @@
 	<div class="dropdown dropdown-end">
 		<label
 			tabindex="0"
-			class="btn btn-secondary mb-1 gap-2 pl-5 pr-3"
+			class="btn btn-secondary mb-1 gap-2 pr-3"
 			class:btn-error={!chains[$activeChain]}
 			for="chain-select"
 		>
+			{#if isValidChainId($activeChain)}
+				<img src={`/chains/${$activeChain}.svg`} alt="" class="w-6 h-6" />
+			{/if}
 			{(chains[$activeChain] && chains[$activeChain].label) || 'Wrong network'}
 			<ArrowDownIcon />
 		</label>
@@ -66,10 +79,12 @@
 						on:click={async () => {
 							const success = await onboard.setChain({ chainId: chain.id })
 							if (success) {
-								$activeChain = parseInt(chain.id, 16)
+								const chainId = parseInt(chain.id, 16)
+								$activeChain = chainId
 							}
 						}}
 					>
+						<img src={`/chains/${parseInt(chain.id, 16)}.svg`} alt="" class="w-6 h-6" />
 						{chain.label}
 					</button>
 				</li>

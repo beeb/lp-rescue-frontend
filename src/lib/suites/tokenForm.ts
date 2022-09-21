@@ -30,9 +30,10 @@ export const suite = create('form', (data) => {
 			warn()
 			if (!get(contracts).baseToken || !get(signerAddress)) return
 			if (get(contracts).LPRescue) {
-				const WETH = await get(contracts).LPRescue.WETH()
-				console.log(WETH)
-				if (ethers.utils.getAddress(data.baseToken) === WETH) return
+				try {
+					const WETH = await get(contracts).LPRescue.WETH()
+					if (ethers.utils.getAddress(data.baseToken) === WETH) return
+				} catch {}
 			}
 			try {
 				const balance: BigNumber = await get(contracts).baseToken.balanceOf(get(signerAddress))
@@ -69,9 +70,10 @@ export const suite = create('form', (data) => {
 			warn()
 			if (!get(contracts).mainToken || !get(signerAddress)) return
 			if (get(contracts).LPRescue) {
-				const WETH = await get(contracts).LPRescue.WETH()
-				console.log(WETH)
-				if (ethers.utils.getAddress(data.mainToken) === WETH) return
+				try {
+					const WETH = await get(contracts).LPRescue.WETH()
+					if (ethers.utils.getAddress(data.mainToken) === WETH) return
+				} catch {}
 			}
 			try {
 				const balance: BigNumber = await get(contracts).mainToken.balanceOf(get(signerAddress))

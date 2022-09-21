@@ -102,7 +102,7 @@ export const onWalletChange = async (wallets: WalletState[]) => {
 				const provider = new ethers.providers.Web3Provider(wallets[0].provider, 'any')
 				defaultEvmStores.setProvider(provider)
 				if (chainData[chainIdTemp].rescueAddress !== ethers.constants.AddressZero) {
-					defaultEvmStores.attachContract('LPRescue', chainData[chainIdTemp].rescueAddress, LPRescue)
+					defaultEvmStores.attachContract('LPRescue', chainData[chainIdTemp].rescueAddress, JSON.stringify(LPRescue))
 				}
 			}
 		}

@@ -24,4 +24,5 @@
   --onboard-primary-100: hsl(var(--b3));
   --onboard-primary-500: hsl(var(--p));
   --onboard-gray-700: hsl(var(--bc));
+  --onboard-gray-600: hsl(var(--bc));
 }

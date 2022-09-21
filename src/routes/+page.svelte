@@ -13,11 +13,13 @@
 
 	let step: number = 0
 
+	let step1Valid: boolean = false
+
 	$: nextEnabled = () => {
 		if (step === 0) {
 			return $signerAddress && chains[$activeChain]
 		} else if (step === 1) {
-			return $signerAddress && chains[$activeChain]
+			return $signerAddress && chains[$activeChain] && step1Valid
 		} else if (step === 2) {
 			return $signerAddress && chains[$activeChain]
 		}
@@ -36,7 +38,11 @@
 		{#if step == 0}
 			<Step0 />
 		{:else if step == 1}
-			<Step1 />
+			<Step1
+				on:valid={(event) => {
+					step1Valid = event.detail
+				}}
+			/>
 		{:else if step == 2}
 			<Step2 />
 		{:else if step == 3}

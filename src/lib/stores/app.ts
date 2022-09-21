@@ -5,6 +5,7 @@ import { default as Onboard, type WalletState } from '@web3-onboard/core'
 import injectedModule from '@web3-onboard/injected-wallets'
 import walletConnectModule from '@web3-onboard/walletconnect'
 import { defaultEvmStores, chainId, signerAddress } from 'svelte-ethers-store'
+import LPRescue from '$lib/abi/LPRescue.json'
 
 export const chains: Record<number, Chain> = {
 	56: {
@@ -18,6 +19,32 @@ export const chains: Record<number, Chain> = {
 		token: 'tBNB',
 		label: 'BSC Testnet',
 		rpcUrl: 'https://data-seed-prebsc-1-s1.binance.org:8545'
+	}
+}
+
+export interface ChainData {
+	rescueAddress: string
+	commonTokens: Record<string, string>
+}
+
+export const chainData: Record<number, ChainData> = {
+	56: {
+		rescueAddress: '0x0000000000000000000000000000000000000000',
+		commonTokens: {
+			WBNB: '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c',
+			BUSD: '0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56',
+			USDT: '0x55d398326f99059fF775485246999027B3197955',
+			USDC: '0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d'
+		}
+	},
+	97: {
+		rescueAddress: '0x3137311847574Ef86ef1141E6D2B47FD08912cc8',
+		commonTokens: {
+			WBNB: '0xae13d989daC2f0dEbFf460aC112a837C89BAa7cd',
+			BUSD: '0x78867BbEeF44f2326bF8DDd1941a4439382EF2A7',
+			USDT: '0x7ef95a0FEE0Dd31b22626fA2e10Ee6A223F8a684',
+			DAI: '0x8a9424745056Eb399FD19a0EC26A14316684e274'
+		}
 	}
 }
 
@@ -74,6 +101,9 @@ export const onWalletChange = async (wallets: WalletState[]) => {
 			if (isValidChainId(chainIdTemp)) {
 				const provider = new ethers.providers.Web3Provider(wallets[0].provider, 'any')
 				defaultEvmStores.setProvider(provider)
+				if (chainData[chainIdTemp].rescueAddress !== ethers.constants.AddressZero) {
+					defaultEvmStores.attachContract('LPRescue', chainData[chainIdTemp].rescueAddress, LPRescue)
+				}
 			}
 		}
 	}

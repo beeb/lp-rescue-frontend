@@ -2,9 +2,12 @@
 	import { fly } from 'svelte/transition'
 	import { signerAddress } from 'svelte-ethers-store'
 	import { chains } from '$lib/constants'
-	import { activeChain } from '$lib/stores/app'
+	import { activeChain, step } from '$lib/stores/app'
 	import CheckIcon from 'virtual:icons/ri/check-line'
 	import InfoIcon from 'virtual:icons/ri/information-line'
+	import ArrowRightIcon from 'virtual:icons/ri/arrow-right-s-line'
+
+	$: valid = $signerAddress && chains[$activeChain]
 </script>
 
 <div
@@ -29,4 +32,17 @@
 			</div>
 		{/if}
 	</div>
+</div>
+
+<div class="flex gap-6 justify-center mt-6">
+	<button
+		type="button"
+		class="btn btn-primary gap-1 pr-3"
+		on:click={() => {
+			$step++
+		}}
+		disabled={!valid}
+	>
+		Next <ArrowRightIcon />
+	</button>
 </div>

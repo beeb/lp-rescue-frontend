@@ -1,6 +1,11 @@
 <script>
 	import { fly } from 'svelte/transition'
+	import { step } from '$lib/stores/app'
+	import ArrowRightIcon from 'virtual:icons/ri/arrow-right-s-line'
+	import ArrowLeftIcon from 'virtual:icons/ri/arrow-left-s-line'
 	import CrossIcon from 'virtual:icons/ri/add-circle-line'
+
+	$: valid = true
 </script>
 
 <div
@@ -15,4 +20,26 @@
 			<button class="btn btn-lg btn-primary gap-2"><CrossIcon /> Rescue LP</button>
 		</div>
 	</div>
+</div>
+
+<div class="flex gap-6 justify-center mt-6">
+	<button
+		type="button"
+		class="btn btn-primary btn-outline gap-1 pl-3"
+		on:click={() => {
+			$step--
+		}}
+	>
+		<ArrowLeftIcon /> Previous
+	</button>
+	<button
+		type="button"
+		class="btn btn-primary gap-1 pr-3"
+		on:click={() => {
+			$step++
+		}}
+		disabled={!valid}
+	>
+		Next <ArrowRightIcon />
+	</button>
 </div>

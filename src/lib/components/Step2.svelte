@@ -1,5 +1,10 @@
 <script lang="ts">
 	import { fly } from 'svelte/transition'
+	import { step } from '$lib/stores/app'
+	import ArrowRightIcon from 'virtual:icons/ri/arrow-right-s-line'
+	import ArrowLeftIcon from 'virtual:icons/ri/arrow-left-s-line'
+
+	$: valid = true
 </script>
 
 <div
@@ -11,4 +16,26 @@
 		<h2 class="card-title text-3xl mb-4">Authorize Transfer</h2>
 		<p class="mb-4">Step 2</p>
 	</div>
+</div>
+
+<div class="flex gap-6 justify-center mt-6">
+	<button
+		type="button"
+		class="btn btn-primary btn-outline gap-1 pl-3"
+		on:click={() => {
+			$step--
+		}}
+	>
+		<ArrowLeftIcon /> Previous
+	</button>
+	<button
+		type="button"
+		class="btn btn-primary gap-1 pr-3"
+		on:click={() => {
+			$step++
+		}}
+		disabled={!valid}
+	>
+		Next <ArrowRightIcon />
+	</button>
 </div>

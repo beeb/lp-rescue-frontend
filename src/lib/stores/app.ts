@@ -10,6 +10,7 @@ import LPRescue from '$lib/abi/LPRescue.json'
 export const dark: Writable<boolean> = writable(false)
 export const activeChain: Writable<number> = writable(defaultChain)
 export const activeChainHex = derived(activeChain, ($activeChain) => ethers.utils.hexlify($activeChain))
+export const step: Writable<number> = writable(0)
 
 /* actions */
 

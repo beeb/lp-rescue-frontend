@@ -1,13 +1,14 @@
 <script lang="ts">
 	import { fly } from 'svelte/transition'
-	import { createEventDispatcher } from 'svelte'
 	import { signerAddress, contracts } from 'svelte-ethers-store'
 	import { chains, chainData } from '$lib/constants'
-	import { activeChain } from '$lib/stores/app'
+	import { activeChain, step } from '$lib/stores/app'
 	import classnames from 'vest/classnames'
 	import ErrorIcon from 'virtual:icons/ri/error-warning-line'
 	import { suite } from '$lib/suites/tokenForm'
 	import type { SuiteRunResult } from 'vest'
+	import ArrowRightIcon from 'virtual:icons/ri/arrow-right-s-line'
+	import ArrowLeftIcon from 'virtual:icons/ri/arrow-left-s-line'
 
 	interface Fields {
 		baseToken: string
@@ -52,12 +53,7 @@
 		invalid: 'input-error'
 	})
 
-	const dispatch = createEventDispatcher()
-
-	$: {
-		const valid = result.isValid()
-		dispatch('valid', valid)
-	}
+	$: valid = result.isValid()
 </script>
 
 <div
@@ -144,6 +140,28 @@
 			</div>
 		{/if}
 	</div>
+</div>
+
+<div class="flex gap-6 justify-center mt-6">
+	<button
+		type="button"
+		class="btn btn-primary btn-outline gap-1 pl-3"
+		on:click={() => {
+			$step--
+		}}
+	>
+		<ArrowLeftIcon /> Previous
+	</button>
+	<button
+		type="button"
+		class="btn btn-primary gap-1 pr-3"
+		on:click={() => {
+			$step++
+		}}
+		disabled={!valid}
+	>
+		Next <ArrowRightIcon />
+	</button>
 </div>
 
 <style>

@@ -1,17 +1,8 @@
 <script lang="ts">
 	import { onMount } from 'svelte'
 	import { signerAddress, defaultEvmStores } from 'svelte-ethers-store'
-	import {
-		activeChain,
-		activeChainHex,
-		chains,
-		defaultProvider,
-		onboard,
-		connect,
-		disconnect,
-		isValidChainId,
-		onWalletChange
-	} from '$lib/stores/app'
+	import { chains, defaultProvider, onboard } from '$lib/constants'
+	import { activeChain, activeChainHex, connect, disconnect, isValidChainId, onWalletChange } from '$lib/stores/app'
 	import CloseIcon from 'virtual:icons/ri/close-line'
 	import ArrowDownIcon from 'virtual:icons/ri/arrow-down-s-line'
 

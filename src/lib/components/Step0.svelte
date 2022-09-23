@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { fly } from 'svelte/transition'
 	import { signerAddress } from 'svelte-ethers-store'
-	import { activeChain, chains } from '$lib/stores/app'
+	import { chains } from '$lib/constants'
+	import { activeChain } from '$lib/stores/app'
 	import CheckIcon from 'virtual:icons/ri/check-line'
 	import InfoIcon from 'virtual:icons/ri/information-line'
 </script>

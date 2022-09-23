@@ -10,6 +10,11 @@ declare namespace App {
 	// interface Platform {}
 }
 
+interface ChainData {
+	rescueAddress: string
+	commonTokens: Record<string, string>
+}
+
 declare module '@walletconnect/web3-provider/dist/umd/index.min.js' {
 	import WalletConnectProvider from '@walletconnect/web3-provider/dist/esm/index'
 	export default WalletConnectProvider

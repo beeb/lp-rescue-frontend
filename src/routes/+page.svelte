@@ -7,7 +7,8 @@
 	import Step2 from '$lib/components/Step2.svelte'
 	import Step3 from '$lib/components/Step3.svelte'
 	import { signerAddress } from 'svelte-ethers-store'
-	import { activeChain, chains } from '$lib/stores/app'
+	import { chains } from '$lib/constants'
+	import { activeChain } from '$lib/stores/app'
 	import ArrowRightIcon from 'virtual:icons/ri/arrow-right-s-line'
 	import ArrowLeftIcon from 'virtual:icons/ri/arrow-left-s-line'
 

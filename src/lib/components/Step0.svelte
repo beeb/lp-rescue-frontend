@@ -7,6 +7,8 @@
 	import InfoIcon from 'virtual:icons/ri/information-line'
 	import ArrowRightIcon from 'virtual:icons/ri/arrow-right-s-line'
 
+	let inTransition = false
+
 	$: valid = $signerAddress && chains[$activeChain]
 </script>
 
@@ -34,15 +36,18 @@
 	</div>
 </div>
 
-<div class="flex gap-6 justify-center mt-6">
-	<button
-		type="button"
-		class="btn btn-primary gap-1 pr-3"
-		on:click={() => {
-			$step++
-		}}
-		disabled={!valid}
-	>
-		Next <ArrowRightIcon />
-	</button>
-</div>
+{#if !inTransition}
+	<div class="col-start-1 row-start-2 flex gap-6 justify-center mt-6">
+		<button
+			type="button"
+			class="btn btn-primary gap-1 pr-3"
+			on:click={() => {
+				inTransition = true
+				$step++
+			}}
+			disabled={!valid}
+		>
+			Next <ArrowRightIcon />
+		</button>
+	</div>
+{/if}

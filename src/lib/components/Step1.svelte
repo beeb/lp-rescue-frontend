@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { onMount } from 'svelte'
 	import { fly } from 'svelte/transition'
 	import { signerAddress, contracts } from 'svelte-ethers-store'
 	import { chains, chainData } from '$lib/constants'
@@ -47,6 +48,17 @@
 		handleChange('baseToken')
 		target.selectedIndex = 0
 	}
+
+	onMount(() => {
+		if ($contracts.baseToken) {
+			formState.baseToken = $contracts.baseToken.address
+			handleChange('baseToken')
+		}
+		if ($contracts.mainToken) {
+			formState.mainToken = $contracts.mainToken.address
+			handleChange('mainToken')
+		}
+	})
 
 	$: cn = classnames(result, {
 		warning: 'input-warning',

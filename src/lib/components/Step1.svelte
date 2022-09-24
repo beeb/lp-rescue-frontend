@@ -75,7 +75,7 @@
 >
 	<div class="card-body gap-6">
 		<h2 class="card-title text-3xl">Choose Tokens</h2>
-		<div>Now, please choose the two tokens of the liquidity pair.</div>
+		<div>Now, please choose the two tokens of the liquidity pool.</div>
 		{#if $signerAddress && chains[$activeChain]}
 			<form on:submit|preventDefault class="flex flex-col gap-6">
 				<div class="form-control">

@@ -1,7 +1,7 @@
 import { writable, derived, get, type Writable } from 'svelte/store'
 import { ethers } from 'ethers'
 import type { WalletState } from '@web3-onboard/core'
-import { defaultEvmStores, chainId, signerAddress } from 'svelte-ethers-store'
+import { defaultEvmStores, chainId, signerAddress, contracts } from 'svelte-ethers-store'
 import { chains, chainData, defaultChain, defaultProvider, onboard, type SupportedChain } from '$lib/constants'
 import LPRescue from '$lib/abi/LPRescue.json'
 
@@ -25,6 +25,7 @@ export const onWalletChange = async (wallets: WalletState[]) => {
 			!chains[get(activeChain)] || // we had selected an unsupported network
 			ethers.utils.getAddress(wallets[0].accounts[0].address) !== get(signerAddress) // the wallet changed
 		) {
+			resetForm()
 			const chainIdTemp = parseInt(wallets[0].chains[0].id, 16)
 			activeChain.set(chainIdTemp)
 			if (isValidChainId(chainIdTemp)) {
@@ -62,4 +63,8 @@ export const disconnect = async () => {
 
 export const isValidChainId = (chainId: number): chainId is SupportedChain => {
 	return chainId in chains
+}
+
+export const resetForm = () => {
+	step.set(0)
 }

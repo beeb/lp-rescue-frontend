@@ -6,9 +6,7 @@
 	import Step1 from '$lib/components/Step1.svelte'
 	import Step2 from '$lib/components/Step2.svelte'
 	import Step3 from '$lib/components/Step3.svelte'
-	import { step } from '$lib/stores/app' /*
-	import ArrowRightIcon from 'virtual:icons/ri/arrow-right-s-line'
-	import ArrowLeftIcon from 'virtual:icons/ri/arrow-left-s-line' */
+	import { step } from '$lib/stores/app'
 </script>
 
 <TitleBar />
@@ -31,30 +29,4 @@
 			<div in:fly={{ x: 200 }} out:fly={{ x: -200 }}>Not sure how you got here...</div>
 		{/if}
 	</div>
-
-	<!-- <div class="flex gap-6">
-		{#if step > 0}
-			<button
-				type="button"
-				class="btn btn-primary btn-outline gap-1 pl-3"
-				on:click={() => {
-					step--
-				}}
-			>
-				<ArrowLeftIcon /> Previous
-			</button>
-		{/if}
-		{#if step < 3}
-			<button
-				type="button"
-				class="btn btn-primary gap-1 pr-3"
-				on:click={() => {
-					step++
-				}}
-				disabled={!nextEnabled()}
-			>
-				Next <ArrowRightIcon />
-			</button>
-		{/if}
-	</div> -->
 </div>

@@ -14,6 +14,8 @@
 	const erc20Abi = JSON.stringify(ERC20)
 
 	let inTransition = false
+	let baseTokenLoading = false
+	let mainTokenLoading = false
 	let baseTokenApproved = false
 	let mainTokenApproved = false
 	let valid = false
@@ -21,6 +23,11 @@
 	const approveToken = async (token: Contract | undefined, spender: string) => {
 		if (!token) {
 			return false
+		}
+		if (token.address === $contracts.baseToken?.address) {
+			baseTokenLoading = true
+		} else {
+			mainTokenLoading = true
 		}
 		try {
 			const tx = await token.approve(spender, ethers.constants.MaxUint256)
@@ -30,8 +37,11 @@
 			console.error(e)
 			return false
 		} finally {
-			const tokenName = token.address === $contracts.baseToken?.address ? 'baseToken' : 'mainToken'
-			defaultEvmStores.attachContract(tokenName, token.address, erc20Abi) // trigger reactivity
+			if (token.address === $contracts.baseToken?.address) {
+				baseTokenLoading = false
+			} else {
+				mainTokenLoading = false
+			}
 		}
 	}
 
@@ -94,11 +104,13 @@
 						<button
 							type="button"
 							id="approve-base-token"
-							class={`btn btn-lg w-full ${baseTokenApproved ? '!btn-success opacity-60' : 'btn-info'}`}
-							disabled={baseTokenApproved}
+							class={`btn btn-lg w-full gap-2 ${baseTokenApproved ? '!btn-success opacity-60' : 'btn-info'}`}
+							disabled={baseTokenApproved || baseTokenLoading}
 						>
 							{#if baseTokenApproved}
 								<CheckIcon />
+							{:else if baseTokenLoading}
+								<div class="loader" />
 							{/if}
 							Approve {symbol}
 						</button>
@@ -127,12 +139,14 @@
 						<button
 							type="button"
 							id="approve-main-token"
-							class={`btn btn-lg w-full ${mainTokenApproved ? '!btn-success opacity-60' : 'btn-info'}`}
-							disabled={mainTokenApproved}
+							class={`btn btn-lg w-full gap-2 ${mainTokenApproved ? '!btn-success opacity-60' : 'btn-info'}`}
+							disabled={mainTokenApproved || mainTokenLoading}
 							on:click|preventDefault={() => approveToken($contracts.mainToken, $contracts.LPRescue.address)}
 						>
 							{#if mainTokenApproved}
 								<CheckIcon />
+							{:else if mainTokenLoading}
+								<div class="loader" />
 							{/if}
 							Approve {symbol}
 						</button>
@@ -183,3 +197,17 @@
 		</button>
 	</div>
 {/if}
+
+<style>
+	.loader {
+		height: 1.2rem;
+		width: 1.2rem;
+		border-radius: 9999px;
+		border-width: 2px;
+		animation: spin 2s linear infinite;
+		border-top-color: transparent;
+		border-left-color: transparent;
+		border-bottom-color: hsl(var(--bc) / var(--tw-text-opacity));
+		border-right-color: hsl(var(--bc) / var(--tw-text-opacity));
+	}
+</style>

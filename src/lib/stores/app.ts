@@ -1,5 +1,5 @@
-import { writable, derived, get, type Writable } from 'svelte/store'
-import { ethers } from 'ethers'
+import { writable, derived, get, type Writable, type Readable } from 'svelte/store'
+import { BigNumber, ethers, type Contract } from 'ethers'
 import type { WalletState } from '@web3-onboard/core'
 import { defaultEvmStores, chainId, signerAddress, contracts } from 'svelte-ethers-store'
 import { chains, chainData, defaultChain, defaultProvider, onboard, type SupportedChain } from '$lib/constants'
@@ -9,8 +9,48 @@ import LPRescue from '$lib/abi/LPRescue.json'
 
 export const dark: Writable<boolean> = writable(false)
 export const activeChain: Writable<number> = writable(defaultChain)
-export const activeChainHex = derived(activeChain, ($activeChain) => ethers.utils.hexlify($activeChain))
+export const activeChainHex: Readable<string> = derived(activeChain, ($activeChain) =>
+	ethers.utils.hexlify($activeChain)
+)
 export const step: Writable<number> = writable(0)
+/* export const baseTokenApprove: Readable<boolean> = derived(
+	// do we need to make an approve call?
+	[contracts, signerAddress],
+	([$contracts, $signerAddress], set) => {
+		if (!$contracts.baseToken || !$contracts.LPRescue) {
+			set(true)
+			return
+		}
+		$contracts.LPRescue.WETH().then((WETH: string) => {
+			if ($contracts.baseToken.address === WETH) {
+				set(false)
+				return
+			}
+			$contracts.baseToken.allowance($signerAddress, $contracts.LPRescue.address).then((allowance: BigNumber) => {
+				set(allowance.lt(ethers.constants.MaxUint256.div(2)))
+			})
+		})
+	},
+	true
+)
+export const mainTokenApprove: Readable<boolean> = derived(
+	// do we need to make an approve call?
+	[contracts, signerAddress],
+	([$contracts, $signerAddress], set) => {
+		if (!$contracts.mainToken || !$contracts.LPRescue) {
+			set(true)
+		}
+		$contracts.LPRescue.WETH().then((WETH: string) => {
+			if ($contracts.mainToken.address === WETH) {
+				set(false)
+			}
+			$contracts.mainToken.allowance($signerAddress, $contracts.LPRescue.address).then((allowance: BigNumber) => {
+				set(allowance.lt(ethers.constants.MaxUint256.div(2)))
+			})
+		})
+	},
+	true
+) */
 
 /* actions */
 
@@ -67,4 +107,16 @@ export const isValidChainId = (chainId: number): chainId is SupportedChain => {
 
 export const resetForm = () => {
 	step.set(0)
+}
+
+export const isTokenApproved = async (token: Contract | undefined, spender: string): Promise<boolean> => {
+	if (!token || !get(contracts).LPRescue) {
+		return false
+	}
+	const WETH = await get(contracts).LPRescue.WETH()
+	if (token.address === WETH) {
+		return true
+	}
+	const allowance: BigNumber = await token.allowance(get(signerAddress), spender)
+	return allowance.gt(ethers.constants.MaxUint256.div(2))
 }

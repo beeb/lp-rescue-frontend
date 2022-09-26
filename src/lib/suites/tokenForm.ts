@@ -2,9 +2,9 @@ import { get } from 'svelte/store'
 import { create, enforce, test, warn, skipWhen, skip } from 'vest'
 import { BigNumber, ethers } from 'ethers'
 import { defaultEvmStores, contracts, signerAddress } from 'svelte-ethers-store'
+import ERC20 from '$lib/abi/ERC20.json'
 
-const erc20Abi =
-	'["function name() view returns (string)","function symbol() view returns (string)","function decimals() view returns (uint8)","function balanceOf(address) view returns (uint256)"]'
+const erc20Abi = JSON.stringify(ERC20)
 
 export const suite = create('form', (data) => {
 	test('baseToken', 'Base token is required', () => {

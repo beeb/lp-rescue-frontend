@@ -42,6 +42,9 @@
 			} else {
 				mainTokenLoading = false
 			}
+			setTimeout(() => {
+				checkTokenApproval()
+			}, 500)
 		}
 	}
 
@@ -57,7 +60,7 @@
 
 	onMount(() => {
 		checkTokenApproval()
-		const interval = setInterval(checkTokenApproval, 1000)
+		const interval = setInterval(checkTokenApproval, 5000)
 		return () => {
 			clearInterval(interval)
 		}

@@ -3,44 +3,51 @@
 @tailwind utilities;
 
 @font-face {
-  font-family: 'Metropolis';
-  src: url('fonts/Metropolis-Regular.woff2') format('woff2'),
-      url('fonts/Metropolis-Regular.woff') format('woff');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
+	font-family: 'Metropolis';
+	src: url('fonts/Metropolis-Regular.woff2') format('woff2'), url('fonts/Metropolis-Regular.woff') format('woff');
+	font-weight: normal;
+	font-style: normal;
+	font-display: swap;
 }
 
 @font-face {
-  font-family: 'Metropolis';
-  src: url('fonts/Metropolis-Bold.woff2') format('woff2'),
-      url('fonts/Metropolis-Bold.woff') format('woff');
-  font-weight: bold;
-  font-style: normal;
-  font-display: swap;
+	font-family: 'Metropolis';
+	src: url('fonts/Metropolis-Bold.woff2') format('woff2'), url('fonts/Metropolis-Bold.woff') format('woff');
+	font-weight: bold;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'ccsignlanguage';
+	src: url('fonts/ccsignlanguage-italic.woff2') format('woff2'), url('fonts/ccsignlanguage-italic.woff') format('woff');
+	font-display: swap;
+	font-style: normal;
+	font-weight: 400;
+	font-stretch: normal;
 }
 
 :root {
-  --onboard-connect-header-background: hsl(var(--b1));
-  --onboard-connect-header-color: hsl(var(--bc));
-  --onboard-close-button-background: #0000;
-  --onboard-close-button-color: hsl(var(--bc));
-  --onboard-wallet-button-background: #0000;
-  --onboard-wallet-button-background-hover: hsl(var(--b3));
-  --onboard-wallet-button-color-hover: hsl(var(--bc));
-  --onboard-wallet-button-color: hsl(var(--bc));
-  --onboard-wallet-button-border-color: hsl(var(--bc));
-  --onboard-wallet-app-icon-border-color: hsl(var(--bc));
-  --onboard-success-100: hsla(var(--su) / 0.5);
-  --onboard-success-200: hsl(var(--su));
-  --onboard-success-500: hsl(var(--su));
-  --onboard-success-600: hsl(var(--suc));
-  --onboard-main-scroll-container-background: hsl(var(--b1));
-  --onboard-modal-background: hsl(var(--b1));
-  --onboard-modal-color: hsl(var(--bc));
-  --onboard-action-required-modal-background: hsl(var(--b1));
-  --onboard-primary-100: hsl(var(--b3));
-  --onboard-primary-500: hsl(var(--p));
-  --onboard-gray-700: hsl(var(--bc));
-  --onboard-gray-600: hsl(var(--bc));
+	--onboard-connect-header-background: hsl(var(--b1));
+	--onboard-connect-header-color: hsl(var(--bc));
+	--onboard-close-button-background: #0000;
+	--onboard-close-button-color: hsl(var(--bc));
+	--onboard-wallet-button-background: #0000;
+	--onboard-wallet-button-background-hover: hsl(var(--b3));
+	--onboard-wallet-button-color-hover: hsl(var(--bc));
+	--onboard-wallet-button-color: hsl(var(--bc));
+	--onboard-wallet-button-border-color: hsl(var(--bc));
+	--onboard-wallet-app-icon-border-color: hsl(var(--bc));
+	--onboard-success-100: hsla(var(--su) / 0.5);
+	--onboard-success-200: hsl(var(--su));
+	--onboard-success-500: hsl(var(--su));
+	--onboard-success-600: hsl(var(--suc));
+	--onboard-main-scroll-container-background: hsl(var(--b1));
+	--onboard-modal-background: hsl(var(--b1));
+	--onboard-modal-color: hsl(var(--bc));
+	--onboard-action-required-modal-background: hsl(var(--b1));
+	--onboard-primary-100: hsl(var(--b3));
+	--onboard-primary-500: hsl(var(--p));
+	--onboard-gray-700: hsl(var(--bc));
+	--onboard-gray-600: hsl(var(--bc));
 }

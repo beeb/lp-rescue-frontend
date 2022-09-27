@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte'
 	import { themeChange } from 'theme-change'
 	import Wallet from './Wallet.svelte'
+	import Logo from '$lib/assets/logo-halftone.svg'
 	import SunIcon from 'virtual:icons/ri/sun-line'
 	import MoonIcon from 'virtual:icons/ri/moon-line'
 	import { dark } from '$lib/stores/app'
@@ -21,7 +22,7 @@
 </script>
 
 <div class="navbar px-6 gap-6 fixed">
-	<a href="/" class="flex-1" title="Home page">Logo</a>
+	<a href="/" class="flex-1" title="Home page"><Logo height="5rem" /></a>
 	<div class="flex-none tooltip tooltip-left" data-tip="Toggle dark theme">
 		<button
 			type="button"

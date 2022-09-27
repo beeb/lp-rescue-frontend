@@ -3,7 +3,7 @@
 	import { fly } from 'svelte/transition'
 	import { step, activeChain, isTokenApproved } from '$lib/stores/app'
 	import { chains } from '$lib/constants'
-	import { defaultEvmStores, contracts, signerAddress } from 'svelte-ethers-store'
+	import { contracts, signerAddress } from 'svelte-ethers-store'
 	import { ethers, type Contract } from 'ethers'
 	import ArrowRightIcon from 'virtual:icons/ri/arrow-right-s-line'
 	import ArrowLeftIcon from 'virtual:icons/ri/arrow-left-s-line'
@@ -73,7 +73,7 @@
 	out:fly={{ x: -500, duration: 500 }}
 >
 	<div class="card-body gap-6">
-		<h2 class="card-title text-3xl">Approve Transfer</h2>
+		<h2 class="card-title text-3xl font-comic">Approve Transfer</h2>
 		<div>
 			In order for the custom LP+Rescue contract to add liquidity, you need to allow it to transfer tokens from your
 			wallet to the LP contract. This process is known as "approval". Please click the buttons below if they indicate

@@ -11,7 +11,7 @@
 
 <TitleBar />
 
-<div class="flex flex-col w-full min-h-screen justify-center items-center gap-10 py-24">
+<div class="flex flex-col w-full min-h-screen justify-center items-center gap-10 py-32">
 	<div>
 		<Steps step={$step} />
 	</div>

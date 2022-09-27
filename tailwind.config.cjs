@@ -6,7 +6,8 @@ module.exports = {
 	theme: {
 		extend: {
 			fontFamily: {
-				sans: ['Metropolis', ...defaultTheme.fontFamily.sans]
+				sans: ['Metropolis', ...defaultTheme.fontFamily.sans],
+				comic: ['ccsignlanguage', ...defaultTheme.fontFamily.sans]
 			}
 		}
 	},

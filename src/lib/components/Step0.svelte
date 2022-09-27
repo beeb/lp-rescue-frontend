@@ -22,7 +22,7 @@
 	out:fly={{ x: -500, duration: 500 }}
 >
 	<div class="card-body gap-6">
-		<h2 class="card-title text-3xl">Before we begin...</h2>
+		<h2 class="card-title text-3xl font-comic">Before we begin...</h2>
 		<div>
 			<h3 class="text-xl mb-2">What is <strong>LP+Rescue?</strong></h3>
 			<p>

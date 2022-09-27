@@ -74,7 +74,7 @@
 	out:fly={{ x: -500, duration: 500 }}
 >
 	<div class="card-body gap-6">
-		<h2 class="card-title text-3xl">Choose Tokens</h2>
+		<h2 class="card-title text-3xl font-comic">Choose Tokens</h2>
 		<div>Now, please choose the two tokens of the liquidity pool.</div>
 		{#if $signerAddress && chains[$activeChain]}
 			<form on:submit|preventDefault class="flex flex-col gap-6">

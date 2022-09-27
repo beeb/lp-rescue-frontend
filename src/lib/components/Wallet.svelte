@@ -38,7 +38,7 @@
 			{(chains[$activeChain] && chains[$activeChain].label) || 'Wrong network'}
 			<ArrowDownIcon />
 		</label>
-		<ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-300 rounded-3xl w-52" id="chain-select">
+		<ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-300 rounded-3xl w-60" id="chain-select">
 			{#each Object.values(chains) as chain}
 				<li>
 					<button

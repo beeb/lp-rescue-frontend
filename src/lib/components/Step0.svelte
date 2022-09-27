@@ -29,10 +29,10 @@
 				<strong>LP+Rescue</strong> is a tool you can use when a Liquidity Pool (LP) has been created on an AMM (Uniswap
 				v2, Pancakeswap) but no liquidity can be added to it. Most commonly, some malicious actor makes the contract
 				"stuck" by adding a tiny amount of one of the tokens (usually WETH or WBNB) and calls the
-				<code class="font-mono bg-gray-800 p-1 rounded">sync</code>
+				<code class="font-mono bg-gray-800 text-gray-200 p-1 rounded">sync</code>
 				function of the smart contract. This leads to one of the
-				<code class="font-mono bg-gray-800 p-1 rounded">reserve</code>s of the pair to be non-zero, which is not
-				supported by the AMM's Router for adding liquidity.<br />
+				<code class="font-mono bg-gray-800 text-gray-200 p-1 rounded">reserve</code>s of the pair to be non-zero, which
+				is not supported by the AMM's Router for adding liquidity.<br />
 				<a href="https://github.com/beeb/lp-rescue-contract" target="_blank" class="link">Learn more</a>
 				<LinkIcon class="inline opacity-60" />
 			</p>

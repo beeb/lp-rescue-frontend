@@ -2,6 +2,24 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: 'Metropolis';
+  src: url('fonts/Metropolis-Regular.woff2') format('woff2'),
+      url('fonts/Metropolis-Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Metropolis';
+  src: url('fonts/Metropolis-Bold.woff2') format('woff2'),
+      url('fonts/Metropolis-Bold.woff') format('woff');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   --onboard-connect-header-background: hsl(var(--b1));
   --onboard-connect-header-color: hsl(var(--bc));

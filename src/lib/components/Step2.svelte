@@ -94,9 +94,7 @@
 								{#await $contracts.LPRescue.WETH() then WETH}
 									{#if WETH !== $contracts.baseToken.address}
 										{#await $contracts.baseToken.allowance($signerAddress, $contracts.LPRescue.address) then allowance}
-											{#await $contracts.baseToken.decimals() then decimals}
-												{ethers.utils.formatUnits(allowance, decimals)}
-											{/await}
+											{allowance.gt(ethers.constants.MaxUint256.div(2)) ? 'sufficient' : 'insufficient'}
 										{/await}
 									{:else}
 										not needed for native coin

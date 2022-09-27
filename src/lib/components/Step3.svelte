@@ -19,7 +19,9 @@
 		<h2 class="card-title text-3xl mb-4 font-comic">Add Liquidity</h2>
 		<p class="mb-4">Step 3</p>
 		<div class="card-actions justify-end">
-			<button class="btn btn-lg btn-info gap-2 font-comic text-xl"><span class="text-3xl">+</span> Rescue LP</button>
+			<button class="btn btn-lg btn-info gap-2 font-comic text-xl uppercase"
+				><span class="text-3xl">+</span> Rescue LP</button
+			>
 		</div>
 	</div>
 </div>

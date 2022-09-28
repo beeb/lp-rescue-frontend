@@ -15,11 +15,6 @@ interface ChainData {
 	commonTokens: Record<string, string>
 }
 
-declare module '@walletconnect/web3-provider/dist/umd/index.min.js' {
-	import WalletConnectProvider from '@walletconnect/web3-provider/dist/esm/index'
-	export default WalletConnectProvider
-}
-
 declare module '*.svg' {
 	const content: any
 	export default content
@@ -38,4 +33,9 @@ declare module '*.svg?src' {
 declare module '*.svg?url' {
 	const content: string
 	export default content
+}
+
+declare module '@walletconnect/web3-provider/dist/umd/index.min.js' {
+	import WalletConnectProvider from '@walletconnect/web3-provider/dist/esm/index'
+	export default WalletConnectProvider
 }

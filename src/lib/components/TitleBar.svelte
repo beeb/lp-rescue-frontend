@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte'
 	import { themeChange } from 'theme-change'
 	import Wallet from './Wallet.svelte'
-	import Logo from '$lib/assets/logo-halftone.svg'
+	import Logo from '$lib/assets/logo-halftone.svg?component'
 	import SunIcon from 'virtual:icons/ri/sun-line'
 	import MoonIcon from 'virtual:icons/ri/moon-line'
 	import { dark } from '$lib/stores/app'

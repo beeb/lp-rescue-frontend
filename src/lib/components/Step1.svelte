@@ -3,7 +3,7 @@
 	import { fly } from 'svelte/transition'
 	import { signerAddress, contracts } from 'svelte-ethers-store'
 	import { chains, chainData } from '$lib/constants'
-	import { activeChain, step } from '$lib/stores/app'
+	import { activeChain, step, baseTokenSymbol, mainTokenSymbol, baseTokenName, mainTokenName } from '$lib/stores/app'
 	import classnames from 'vest/classnames'
 	import ErrorIcon from 'virtual:icons/ri/error-warning-line'
 	import { suite } from '$lib/suites/tokenForm'
@@ -86,15 +86,15 @@
 						{:else if result.hasErrors('baseToken')}
 							<span class="label-text-alt text-error">{result.getErrors('baseToken')[0]}</span>
 						{:else if result.hasWarnings('baseToken')}
-							<span class="label-text-alt text-warning">{result.getWarnings('baseToken')[0]}</span>
+							<span class="label-text-alt text-warning">
+								{$baseTokenName}
+								({$baseTokenSymbol}):
+								{result.getWarnings('baseToken')[0]}
+							</span>
 						{:else if $contracts.baseToken}
 							<span class="label-text-alt text-success">
-								{#await $contracts.baseToken.name() then name}
-									{name}
-								{/await}
-								{#await $contracts.baseToken.symbol() then symbol}
-									({symbol})
-								{/await}
+								{$baseTokenName}
+								({$baseTokenSymbol})
 							</span>
 						{/if}
 					</label>
@@ -123,15 +123,15 @@
 						{:else if result.hasErrors('mainToken')}
 							<span class="label-text-alt text-error">{result.getErrors('mainToken')[0]}</span>
 						{:else if result.hasWarnings('mainToken')}
-							<span class="label-text-alt text-warning">{result.getWarnings('mainToken')[0]}</span>
+							<span class="label-text-alt text-warning">
+								{$mainTokenName}
+								({$mainTokenSymbol}):
+								{result.getWarnings('mainToken')[0]}
+							</span>
 						{:else if $contracts.mainToken}
 							<span class="label-text-alt text-success">
-								{#await $contracts.mainToken.name() then name}
-									{name}
-								{/await}
-								{#await $contracts.mainToken.symbol() then symbol}
-									({symbol})
-								{/await}
+								{$mainTokenName}
+								({$mainTokenSymbol})
 							</span>
 						{/if}
 					</label>

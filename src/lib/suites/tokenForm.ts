@@ -2,6 +2,7 @@ import { get } from 'svelte/store'
 import { create, enforce, test, warn, skipWhen, skip } from 'vest'
 import { BigNumber, ethers } from 'ethers'
 import { defaultEvmStores, contracts, signerAddress } from 'svelte-ethers-store'
+import { baseTokenName } from '$lib/stores/app'
 import ERC20 from '$lib/abi/ERC20.json'
 
 const erc20Abi = JSON.stringify(ERC20)
@@ -16,15 +17,12 @@ export const suite = create('form', (data) => {
 	})
 	skipWhen(suite.get().hasErrors('baseToken'), () => {
 		test('baseToken', 'Address is not a valid ERC20 token', async () => {
-			try {
-				defaultEvmStores.attachContract('baseToken', data.baseToken, erc20Abi)
-				await get(contracts).baseToken.name()
-				await get(contracts).baseToken.symbol()
-				await get(contracts).baseToken.decimals()
-			} catch (err) {
-				console.error(err)
-				throw err
-			}
+			await defaultEvmStores.attachContract('baseToken', data.baseToken, erc20Abi)
+			await Promise.all([
+				get(contracts).baseToken.name(),
+				get(contracts).baseToken.symbol(),
+				get(contracts).baseToken.decimals()
+			])
 		})
 		test('baseToken', 'Your balance is zero', async () => {
 			warn()
@@ -39,7 +37,6 @@ export const suite = create('form', (data) => {
 				const balance: BigNumber = await get(contracts).baseToken.balanceOf(get(signerAddress))
 				enforce(balance).condition((val: BigNumber) => val.gt(0))
 			} catch (err) {
-				console.error(err)
 				throw err
 			}
 		})
@@ -57,14 +54,12 @@ export const suite = create('form', (data) => {
 	})
 	skipWhen(suite.get().hasErrors('mainToken'), () => {
 		test('mainToken', 'Address is not a valid ERC20 token', async () => {
-			try {
-				defaultEvmStores.attachContract('mainToken', data.mainToken, erc20Abi)
-				await get(contracts).mainToken.name()
-				await get(contracts).mainToken.symbol()
-				await get(contracts).mainToken.decimals()
-			} catch (err) {
-				throw err
-			}
+			await defaultEvmStores.attachContract('mainToken', data.mainToken, erc20Abi)
+			await Promise.all([
+				get(contracts).mainToken.name(),
+				get(contracts).mainToken.symbol(),
+				get(contracts).mainToken.decimals()
+			])
 		})
 		test('mainToken', 'Your balance is zero', async () => {
 			warn()
@@ -79,7 +74,6 @@ export const suite = create('form', (data) => {
 				const balance: BigNumber = await get(contracts).mainToken.balanceOf(get(signerAddress))
 				enforce(balance).condition((val: BigNumber) => val.gt(0))
 			} catch (err) {
-				console.error(err)
 				throw err
 			}
 		})

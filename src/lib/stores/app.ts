@@ -13,45 +13,73 @@ export const activeChainHex: Readable<string> = derived(activeChain, ($activeCha
 	ethers.utils.hexlify($activeChain)
 )
 export const step: Writable<number> = writable(0)
-export const wethAddress: Writable<string> = writable('')
-/* export const baseTokenApprove: Readable<boolean> = derived(
-	// do we need to make an approve call?
-	[contracts, signerAddress],
-	([$contracts, $signerAddress], set) => {
-		if (!$contracts.baseToken || !$contracts.LPRescue) {
-			set(true)
-			return
+export const wethAddress: Readable<string> = derived(
+	[contracts],
+	([$contracts], set) => {
+		if ($contracts.LPRescue) {
+			$contracts.LPRescue.WETH().then((address: string) => set(address))
 		}
-		$contracts.LPRescue.WETH().then((WETH: string) => {
-			if ($contracts.baseToken.address === WETH) {
-				set(false)
-				return
-			}
-			$contracts.baseToken.allowance($signerAddress, $contracts.LPRescue.address).then((allowance: BigNumber) => {
-				set(allowance.lt(ethers.constants.MaxUint256.div(2)))
-			})
-		})
 	},
-	true
+	''
 )
-export const mainTokenApprove: Readable<boolean> = derived(
-	// do we need to make an approve call?
-	[contracts, signerAddress],
-	([$contracts, $signerAddress], set) => {
-		if (!$contracts.mainToken || !$contracts.LPRescue) {
-			set(true)
-		}
-		$contracts.LPRescue.WETH().then((WETH: string) => {
-			if ($contracts.mainToken.address === WETH) {
-				set(false)
-			}
-			$contracts.mainToken.allowance($signerAddress, $contracts.LPRescue.address).then((allowance: BigNumber) => {
-				set(allowance.lt(ethers.constants.MaxUint256.div(2)))
+export const baseTokenSymbol: Readable<string> = derived(
+	[contracts],
+	([$contracts], set) => {
+		if ($contracts.baseToken) {
+			$contracts.baseToken.symbol().then((symbol: string) => {
+				set(symbol)
 			})
-		})
+		}
 	},
-	true
-) */
+	''
+)
+export const mainTokenSymbol: Readable<string> = derived(
+	[contracts],
+	([$contracts], set) => {
+		if ($contracts.mainToken) {
+			$contracts.mainToken.symbol().then((symbol: string) => set(symbol))
+		}
+	},
+	''
+)
+export const baseTokenName: Readable<string> = derived(
+	[contracts],
+	([$contracts], set) => {
+		if ($contracts.baseToken) {
+			$contracts.baseToken.name().then((name: string) => {
+				set(name)
+			})
+		}
+	},
+	''
+)
+export const mainTokenName: Readable<string> = derived(
+	[contracts],
+	([$contracts], set) => {
+		if ($contracts.mainToken) {
+			$contracts.mainToken.name().then((name: string) => set(name))
+		}
+	},
+	''
+)
+
+export const isTokenApproved = async (
+	token: Contract | undefined,
+	spender: string
+): Promise<[boolean, BigNumber | null]> => {
+	if (!token) {
+		return [false, null]
+	}
+	if (token.address === get(wethAddress)) {
+		return [true, null]
+	}
+	const allowance: BigNumber = await token.allowance(get(signerAddress), spender)
+	return [allowance.gt(ethers.constants.MaxUint256.div(2)), allowance]
+}
+
+export const isValidChainId = (chainId: number): chainId is SupportedChain => {
+	return chainId in chains
+}
 
 /* actions */
 
@@ -73,9 +101,11 @@ export const onWalletChange = async (wallets: WalletState[]) => {
 				const provider = new ethers.providers.Web3Provider(wallets[0].provider, 'any')
 				defaultEvmStores.setProvider(provider)
 				if (chainData[chainIdTemp].rescueAddress !== ethers.constants.AddressZero) {
-					defaultEvmStores.attachContract('LPRescue', chainData[chainIdTemp].rescueAddress, JSON.stringify(LPRescue))
-					const _wethAddress = await get(contracts).LPRescue.WETH()
-					wethAddress.set(_wethAddress)
+					await defaultEvmStores.attachContract(
+						'LPRescue',
+						chainData[chainIdTemp].rescueAddress,
+						JSON.stringify(LPRescue)
+					)
 				}
 			}
 		}
@@ -104,24 +134,6 @@ export const disconnect = async () => {
 	await defaultEvmStores.setProvider(defaultProvider)
 }
 
-export const isValidChainId = (chainId: number): chainId is SupportedChain => {
-	return chainId in chains
-}
-
 export const resetForm = () => {
 	step.set(0)
-}
-
-export const isTokenApproved = async (
-	token: Contract | undefined,
-	spender: string
-): Promise<[boolean, BigNumber | null]> => {
-	if (!token) {
-		return [false, null]
-	}
-	if (token.address === get(wethAddress)) {
-		return [true, null]
-	}
-	const allowance: BigNumber = await token.allowance(get(signerAddress), spender)
-	return [allowance.gt(ethers.constants.MaxUint256.div(2)), allowance]
 }

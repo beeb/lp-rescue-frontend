@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte'
 	import { fly } from 'svelte/transition'
-	import { step, activeChain, isTokenApproved, wethAddress } from '$lib/stores/app'
+	import { step, activeChain, isTokenApproved, wethAddress, baseTokenSymbol, mainTokenSymbol } from '$lib/stores/app'
 	import { chains } from '$lib/constants'
 	import { contracts, signerAddress } from 'svelte-ethers-store'
 	import { BigNumber, ethers, type Contract } from 'ethers'
@@ -11,9 +11,6 @@
 	import ErrorIcon from 'virtual:icons/ri/error-warning-line'
 
 	let inTransition = false
-
-	let baseTokenSymbol: string
-	let mainTokenSymbol: string
 
 	let baseTokenLoading = false
 	let mainTokenLoading = false
@@ -50,15 +47,6 @@
 		}
 	}
 
-	const getTokenData = async () => {
-		if ($contracts.baseToken) {
-			baseTokenSymbol = await $contracts.baseToken.symbol()
-		}
-		if ($contracts.mainToken) {
-			mainTokenSymbol = await $contracts.mainToken.symbol()
-		}
-	}
-
 	const checkTokenApproval = async () => {
 		if ($contracts.baseToken && $contracts.LPRescue) {
 			;[baseTokenApproved, baseTokenAllowance] = await isTokenApproved(
@@ -85,8 +73,7 @@
 	}
 
 	onMount(() => {
-		getTokenData()
-		checkTokenApproval()
+		setTimeout(checkTokenApproval, 500)
 		const interval = setInterval(checkTokenApproval, 5000)
 		return () => {
 			clearInterval(interval)
@@ -112,7 +99,7 @@
 				<div class="form-control">
 					<label class="label" for="approve-base-token">
 						<span class="label-text">
-							Base Token {baseTokenSymbol && `(${baseTokenSymbol})`}
+							Base Token {$baseTokenSymbol && `(${$baseTokenSymbol})`}
 						</span>
 
 						<span class="label-text-alt">
@@ -131,13 +118,13 @@
 						{:else if baseTokenLoading}
 							<div class="loader" />
 						{/if}
-						Approve {baseTokenSymbol}
+						Approve {$baseTokenSymbol}
 					</button>
 				</div>
 				<div class="form-control">
 					<label class="label" for="approve-main-token">
 						<span class="label-text">
-							Your Token {mainTokenSymbol && `(${mainTokenSymbol})`}
+							Your Token {$mainTokenSymbol && `(${$mainTokenSymbol})`}
 						</span>
 
 						<span class="label-text-alt">
@@ -157,7 +144,7 @@
 						{:else if mainTokenLoading}
 							<div class="loader" />
 						{/if}
-						Approve {mainTokenSymbol}
+						Approve {$mainTokenSymbol}
 					</button>
 				</div>
 			</form>

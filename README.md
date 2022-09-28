@@ -1,4 +1,4 @@
-![LP-Rescue](./src/lib/assets/logo-halftone.svg)
+![LP-Rescue](./logo-readme.svg)
 
 # LP Rescue Frontend
 

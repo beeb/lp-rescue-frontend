@@ -22,7 +22,6 @@
 	let mainTokenApproved = false
 	let baseTokenAllowance: BigNumber | null = null
 	let mainTokenAllowance: BigNumber | null = null
-	let valid = false
 
 	const approveToken = async (token: Contract | undefined, spender: string) => {
 		if (!token) {
@@ -77,8 +76,9 @@
 				$contracts.LPRescue.address
 			)
 		}
-		valid = baseTokenApproved && mainTokenApproved
 	}
+
+	$: valid = baseTokenApproved && mainTokenApproved
 
 	$: allowanceStatus = (token: Contract | undefined, allowance: BigNumber | null) => {
 		return token && wethAddress && wethAddress !== token.address

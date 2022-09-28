@@ -11,6 +11,7 @@
 	import ErrorIcon from 'virtual:icons/ri/error-warning-line'
 
 	let inTransition = false
+	let buttonsDisabled = true
 
 	let baseTokenLoading = false
 	let mainTokenLoading = false
@@ -72,12 +73,13 @@
 			: 'not needed for native coin'
 	}
 
-	$: {
+	$: (async () => {
 		// trigger initial approval check
 		if ($wethAddress) {
-			checkTokenApproval()
+			await checkTokenApproval()
+			buttonsDisabled = false
 		}
-	}
+	})()
 
 	onMount(() => {
 		const interval = setInterval(checkTokenApproval, 5000)
@@ -117,7 +119,7 @@
 						type="button"
 						id="approve-base-token"
 						class={`btn btn-lg w-full gap-2 ${baseTokenApproved ? '!btn-success opacity-60' : 'btn-info'}`}
-						disabled={baseTokenApproved || baseTokenLoading}
+						disabled={baseTokenApproved || baseTokenLoading || buttonsDisabled}
 					>
 						{#if baseTokenApproved}
 							<CheckIcon />
@@ -142,7 +144,7 @@
 						type="button"
 						id="approve-main-token"
 						class={`btn btn-lg w-full gap-2 ${mainTokenApproved ? '!btn-success opacity-60' : 'btn-info'}`}
-						disabled={mainTokenApproved || mainTokenLoading}
+						disabled={mainTokenApproved || mainTokenLoading || buttonsDisabled}
 						on:click|preventDefault={() => approveToken($contracts.mainToken, $contracts.LPRescue.address)}
 					>
 						{#if mainTokenApproved}

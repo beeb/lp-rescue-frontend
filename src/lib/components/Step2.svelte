@@ -72,8 +72,14 @@
 			: 'not needed for native coin'
 	}
 
+	$: {
+		// trigger initial approval check
+		if ($wethAddress) {
+			checkTokenApproval()
+		}
+	}
+
 	onMount(() => {
-		setTimeout(checkTokenApproval, 500)
 		const interval = setInterval(checkTokenApproval, 5000)
 		return () => {
 			clearInterval(interval)

@@ -109,14 +109,17 @@ export const resetForm = () => {
 	step.set(0)
 }
 
-export const isTokenApproved = async (token: Contract | undefined, spender: string): Promise<boolean> => {
+export const isTokenApproved = async (
+	token: Contract | undefined,
+	spender: string
+): Promise<[boolean, BigNumber | null]> => {
 	if (!token || !get(contracts).LPRescue) {
-		return false
+		return [false, null]
 	}
 	const WETH = await get(contracts).LPRescue.WETH()
 	if (token.address === WETH) {
-		return true
+		return [true, null]
 	}
 	const allowance: BigNumber = await token.allowance(get(signerAddress), spender)
-	return allowance.gt(ethers.constants.MaxUint256.div(2))
+	return [allowance.gt(ethers.constants.MaxUint256.div(2)), allowance]
 }

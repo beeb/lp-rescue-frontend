@@ -4,20 +4,24 @@
 	import { step, activeChain, isTokenApproved } from '$lib/stores/app'
 	import { chains } from '$lib/constants'
 	import { contracts, signerAddress } from 'svelte-ethers-store'
-	import { ethers, type Contract } from 'ethers'
+	import { BigNumber, ethers, type Contract } from 'ethers'
 	import ArrowRightIcon from 'virtual:icons/ri/arrow-right-s-line'
 	import ArrowLeftIcon from 'virtual:icons/ri/arrow-left-s-line'
 	import CheckIcon from 'virtual:icons/ri/check-line'
 	import ErrorIcon from 'virtual:icons/ri/error-warning-line'
-	import ERC20 from '$lib/abi/ERC20.json'
-
-	const erc20Abi = JSON.stringify(ERC20)
 
 	let inTransition = false
+
+	let baseTokenSymbol: string
+	let mainTokenSymbol: string
+	let wethAddress: string
+
 	let baseTokenLoading = false
 	let mainTokenLoading = false
 	let baseTokenApproved = false
 	let mainTokenApproved = false
+	let baseTokenAllowance: BigNumber | null = null
+	let mainTokenAllowance: BigNumber | null = null
 	let valid = false
 
 	const approveToken = async (token: Contract | undefined, spender: string) => {
@@ -48,17 +52,44 @@
 		}
 	}
 
+	const getTokenData = async () => {
+		if ($contracts.baseToken) {
+			baseTokenSymbol = await $contracts.baseToken.symbol()
+		}
+		if ($contracts.mainToken) {
+			mainTokenSymbol = await $contracts.mainToken.symbol()
+		}
+		if ($contracts.LPRescue) {
+			wethAddress = await $contracts.LPRescue.WETH()
+		}
+	}
+
 	const checkTokenApproval = async () => {
 		if ($contracts.baseToken && $contracts.LPRescue) {
-			baseTokenApproved = await isTokenApproved($contracts.baseToken, $contracts.LPRescue.address)
+			;[baseTokenApproved, baseTokenAllowance] = await isTokenApproved(
+				$contracts.baseToken,
+				$contracts.LPRescue.address
+			)
 		}
 		if ($contracts.mainToken && $contracts.LPRescue) {
-			mainTokenApproved = await isTokenApproved($contracts.mainToken, $contracts.LPRescue.address)
+			;[mainTokenApproved, mainTokenAllowance] = await isTokenApproved(
+				$contracts.mainToken,
+				$contracts.LPRescue.address
+			)
 		}
 		valid = baseTokenApproved && mainTokenApproved
 	}
 
+	$: allowanceStatus = (token: Contract | undefined, allowance: BigNumber | null) => {
+		return token && wethAddress && wethAddress !== token.address
+			? allowance && allowance.gt(ethers.constants.MaxUint256.div(2))
+				? 'sufficient'
+				: 'insufficient'
+			: 'not needed for native coin'
+	}
+
 	onMount(() => {
+		getTokenData()
 		checkTokenApproval()
 		const interval = setInterval(checkTokenApproval, 5000)
 		return () => {
@@ -80,78 +111,58 @@
 			you don't have enough allowance for the transfer.
 		</div>
 
-		{#if $signerAddress && chains[$activeChain] && $contracts.baseToken && $contracts.mainToken && $contracts.LPRescue}
+		{#if $signerAddress && chains[$activeChain]}
 			<form on:submit|preventDefault class="flex flex-col gap-6">
 				<div class="form-control">
-					{#await $contracts.baseToken.symbol() then symbol}
-						<label class="label" for="approve-base-token">
-							<span class="label-text">
-								Base Token ({symbol})
-							</span>
+					<label class="label" for="approve-base-token">
+						<span class="label-text">
+							Base Token {baseTokenSymbol && `(${baseTokenSymbol})`}
+						</span>
 
-							<span class="label-text-alt">
-								Allowance:
-								{#await $contracts.LPRescue.WETH() then WETH}
-									{#if WETH !== $contracts.baseToken.address}
-										{#await $contracts.baseToken.allowance($signerAddress, $contracts.LPRescue.address) then allowance}
-											{allowance.gt(ethers.constants.MaxUint256.div(2)) ? 'sufficient' : 'insufficient'}
-										{/await}
-									{:else}
-										not needed for native coin
-									{/if}
-								{/await}
-							</span>
-						</label>
-						<button
-							type="button"
-							id="approve-base-token"
-							class={`btn btn-lg w-full gap-2 ${baseTokenApproved ? '!btn-success opacity-60' : 'btn-info'}`}
-							disabled={baseTokenApproved || baseTokenLoading}
-						>
-							{#if baseTokenApproved}
-								<CheckIcon />
-							{:else if baseTokenLoading}
-								<div class="loader" />
-							{/if}
-							Approve {symbol}
-						</button>
-					{/await}
+						<span class="label-text-alt">
+							Allowance:
+							{allowanceStatus($contracts.baseToken, baseTokenAllowance)}
+						</span>
+					</label>
+					<button
+						type="button"
+						id="approve-base-token"
+						class={`btn btn-lg w-full gap-2 ${baseTokenApproved ? '!btn-success opacity-60' : 'btn-info'}`}
+						disabled={baseTokenApproved || baseTokenLoading}
+					>
+						{#if baseTokenApproved}
+							<CheckIcon />
+						{:else if baseTokenLoading}
+							<div class="loader" />
+						{/if}
+						Approve {baseTokenSymbol}
+					</button>
 				</div>
 				<div class="form-control">
-					{#await $contracts.mainToken.symbol() then symbol}
-						<label class="label" for="approve-main-token">
-							<span class="label-text">
-								Your Token ({symbol})
-							</span>
+					<label class="label" for="approve-main-token">
+						<span class="label-text">
+							Your Token {mainTokenSymbol && `(${mainTokenSymbol})`}
+						</span>
 
-							<span class="label-text-alt">
-								Allowance:
-								{#await $contracts.LPRescue.WETH() then WETH}
-									{#if WETH !== $contracts.mainToken.address}
-										{#await $contracts.mainToken.allowance($signerAddress, $contracts.LPRescue.address) then allowance}
-											{allowance.gt(ethers.constants.MaxUint256.div(2)) ? 'sufficient' : 'insufficient'}
-										{/await}
-									{:else}
-										not needed for native coin
-									{/if}
-								{/await}
-							</span>
-						</label>
-						<button
-							type="button"
-							id="approve-main-token"
-							class={`btn btn-lg w-full gap-2 ${mainTokenApproved ? '!btn-success opacity-60' : 'btn-info'}`}
-							disabled={mainTokenApproved || mainTokenLoading}
-							on:click|preventDefault={() => approveToken($contracts.mainToken, $contracts.LPRescue.address)}
-						>
-							{#if mainTokenApproved}
-								<CheckIcon />
-							{:else if mainTokenLoading}
-								<div class="loader" />
-							{/if}
-							Approve {symbol}
-						</button>
-					{/await}
+						<span class="label-text-alt">
+							Allowance:
+							{allowanceStatus($contracts.mainToken, mainTokenAllowance)}
+						</span>
+					</label>
+					<button
+						type="button"
+						id="approve-main-token"
+						class={`btn btn-lg w-full gap-2 ${mainTokenApproved ? '!btn-success opacity-60' : 'btn-info'}`}
+						disabled={mainTokenApproved || mainTokenLoading}
+						on:click|preventDefault={() => approveToken($contracts.mainToken, $contracts.LPRescue.address)}
+					>
+						{#if mainTokenApproved}
+							<CheckIcon />
+						{:else if mainTokenLoading}
+							<div class="loader" />
+						{/if}
+						Approve {mainTokenSymbol}
+					</button>
 				</div>
 			</form>
 			{#if valid}

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte'
 	import { fly } from 'svelte/transition'
-	import { step, activeChain, isTokenApproved } from '$lib/stores/app'
+	import { step, activeChain, isTokenApproved, wethAddress } from '$lib/stores/app'
 	import { chains } from '$lib/constants'
 	import { contracts, signerAddress } from 'svelte-ethers-store'
 	import { BigNumber, ethers, type Contract } from 'ethers'
@@ -14,7 +14,6 @@
 
 	let baseTokenSymbol: string
 	let mainTokenSymbol: string
-	let wethAddress: string
 
 	let baseTokenLoading = false
 	let mainTokenLoading = false
@@ -58,9 +57,6 @@
 		if ($contracts.mainToken) {
 			mainTokenSymbol = await $contracts.mainToken.symbol()
 		}
-		if ($contracts.LPRescue) {
-			wethAddress = await $contracts.LPRescue.WETH()
-		}
 	}
 
 	const checkTokenApproval = async () => {
@@ -81,7 +77,7 @@
 	$: valid = baseTokenApproved && mainTokenApproved
 
 	$: allowanceStatus = (token: Contract | undefined, allowance: BigNumber | null) => {
-		return token && wethAddress && wethAddress !== token.address
+		return token && $wethAddress !== token.address
 			? allowance && allowance.gt(ethers.constants.MaxUint256.div(2))
 				? 'sufficient'
 				: 'insufficient'

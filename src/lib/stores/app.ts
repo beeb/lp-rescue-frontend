@@ -13,6 +13,7 @@ export const activeChainHex: Readable<string> = derived(activeChain, ($activeCha
 	ethers.utils.hexlify($activeChain)
 )
 export const step: Writable<number> = writable(0)
+export const wethAddress: Writable<string> = writable('')
 /* export const baseTokenApprove: Readable<boolean> = derived(
 	// do we need to make an approve call?
 	[contracts, signerAddress],
@@ -73,6 +74,8 @@ export const onWalletChange = async (wallets: WalletState[]) => {
 				defaultEvmStores.setProvider(provider)
 				if (chainData[chainIdTemp].rescueAddress !== ethers.constants.AddressZero) {
 					defaultEvmStores.attachContract('LPRescue', chainData[chainIdTemp].rescueAddress, JSON.stringify(LPRescue))
+					const _wethAddress = await get(contracts).LPRescue.WETH()
+					wethAddress.set(_wethAddress)
 				}
 			}
 		}
@@ -113,11 +116,10 @@ export const isTokenApproved = async (
 	token: Contract | undefined,
 	spender: string
 ): Promise<[boolean, BigNumber | null]> => {
-	if (!token || !get(contracts).LPRescue) {
+	if (!token) {
 		return [false, null]
 	}
-	const WETH = await get(contracts).LPRescue.WETH()
-	if (token.address === WETH) {
+	if (token.address === get(wethAddress)) {
 		return [true, null]
 	}
 	const allowance: BigNumber = await token.allowance(get(signerAddress), spender)

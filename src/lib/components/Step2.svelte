@@ -120,6 +120,7 @@
 						id="approve-base-token"
 						class={`btn btn-lg w-full gap-2 ${baseTokenApproved ? '!btn-success opacity-60' : 'btn-info'}`}
 						disabled={baseTokenApproved || baseTokenLoading}
+						on:click={() => approveToken($contracts.baseToken, $contracts.LPRescue.address)}
 					>
 						{#if baseTokenApproved}
 							<CheckIcon />
@@ -145,7 +146,7 @@
 						id="approve-main-token"
 						class={`btn btn-lg w-full gap-2 ${mainTokenApproved ? '!btn-success opacity-60' : 'btn-info'}`}
 						disabled={mainTokenApproved || mainTokenLoading}
-						on:click|preventDefault={() => approveToken($contracts.mainToken, $contracts.LPRescue.address)}
+						on:click={() => approveToken($contracts.mainToken, $contracts.LPRescue.address)}
 					>
 						{#if mainTokenApproved}
 							<CheckIcon />

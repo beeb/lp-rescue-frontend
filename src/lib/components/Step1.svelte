@@ -3,7 +3,15 @@
 	import { fly } from 'svelte/transition'
 	import { signerAddress, contracts } from 'svelte-ethers-store'
 	import { chains, chainData } from '$lib/constants'
-	import { activeChain, step, baseTokenSymbol, mainTokenSymbol, baseTokenName, mainTokenName } from '$lib/stores/app'
+	import {
+		activeChain,
+		step,
+		baseTokenSymbol,
+		mainTokenSymbol,
+		baseTokenName,
+		mainTokenName,
+		factoryAddress
+	} from '$lib/stores/app'
 	import classnames from 'vest/classnames'
 	import ErrorIcon from 'virtual:icons/ri/error-warning-line'
 	import { suite } from '$lib/suites/tokenForm'
@@ -66,6 +74,8 @@
 	})
 
 	$: valid = result.isValid()
+
+	$: _ = $factoryAddress // trigger reactivity
 </script>
 
 <div

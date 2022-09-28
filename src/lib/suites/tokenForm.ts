@@ -1,11 +1,16 @@
 import { get } from 'svelte/store'
-import { create, enforce, test, warn, skipWhen, skip } from 'vest'
+import { create, enforce, test, warn, skipWhen } from 'vest'
+import 'vest/enforce/compounds'
 import { BigNumber, ethers } from 'ethers'
 import { defaultEvmStores, contracts, signerAddress } from 'svelte-ethers-store'
-import { baseTokenName } from '$lib/stores/app'
+import { wethAddress, factoryAddress } from '$lib/stores/app'
 import ERC20 from '$lib/abi/ERC20.json'
+import Factory from '$lib/abi/Factory.json'
+import Pair from '$lib/abi/Pair.json'
 
 const erc20Abi = JSON.stringify(ERC20)
+const factoryAbi = JSON.stringify(Factory)
+const pairAbi = JSON.stringify(Pair)
 
 export const suite = create('form', (data) => {
 	test('baseToken', 'Base token is required', () => {
@@ -26,12 +31,14 @@ export const suite = create('form', (data) => {
 		})
 		test('baseToken', 'Your balance is zero', async () => {
 			warn()
-			if (!get(contracts).baseToken || !get(signerAddress)) return
-			if (get(contracts).LPRescue) {
-				try {
-					const WETH = await get(contracts).LPRescue.WETH()
-					if (ethers.utils.getAddress(data.baseToken) === WETH) return
-				} catch {}
+			if (!get(contracts).baseToken || !get(signerAddress)) {
+				return
+			}
+			const weth = get(wethAddress)
+			if (weth) {
+				if (ethers.utils.getAddress(data.baseToken) === weth) {
+					return
+				}
 			}
 			try {
 				const balance: BigNumber = await get(contracts).baseToken.balanceOf(get(signerAddress))
@@ -63,12 +70,14 @@ export const suite = create('form', (data) => {
 		})
 		test('mainToken', 'Your balance is zero', async () => {
 			warn()
-			if (!get(contracts).mainToken || !get(signerAddress)) return
-			if (get(contracts).LPRescue) {
-				try {
-					const WETH = await get(contracts).LPRescue.WETH()
-					if (ethers.utils.getAddress(data.mainToken) === WETH) return
-				} catch {}
+			if (!get(contracts).mainToken || !get(signerAddress)) {
+				return
+			}
+			const weth = get(wethAddress)
+			if (weth) {
+				if (ethers.utils.getAddress(data.mainToken) === weth) {
+					return
+				}
 			}
 			try {
 				const balance: BigNumber = await get(contracts).mainToken.balanceOf(get(signerAddress))
@@ -76,6 +85,34 @@ export const suite = create('form', (data) => {
 			} catch (err) {
 				throw err
 			}
+		})
+	})
+
+	skipWhen(suite.get().hasErrors('baseToken') || suite.get().hasErrors('mainToken'), () => {
+		test('mainToken', "Pair doesn't exist", async () => {
+			if (!get(factoryAddress)) {
+				return
+			}
+			await defaultEvmStores.attachContract('factory', get(factoryAddress), factoryAbi)
+			const pairAddress: string = await get(contracts).factory.getPair(data.baseToken, data.mainToken)
+			enforce(pairAddress).notEquals(ethers.constants.AddressZero)
+		})
+		test('mainToken', 'Pair is not stuck', async () => {
+			if (!get(factoryAddress)) {
+				return
+			}
+			await defaultEvmStores.attachContract('factory', get(factoryAddress), factoryAbi)
+			const pairAddress: string = await get(contracts).factory.getPair(data.baseToken, data.mainToken)
+			if (pairAddress === ethers.constants.AddressZero) {
+				// pair not found, we can't check the reserves
+				return
+			}
+			await defaultEvmStores.attachContract('pair', pairAddress, pairAbi)
+			const [reserve0, reserve1, _]: [BigNumber, BigNumber, unknown] = await get(contracts).pair.getReserves()
+			enforce([reserve0, reserve1]).anyOf(
+				enforce.condition(([res0, res1]: [BigNumber, BigNumber]) => res0.gt(0) && res1.lte(0)),
+				enforce.condition(([res0, res1]: [BigNumber, BigNumber]) => res0.lte(0) && res1.gt(0))
+			)
 		})
 	})
 })

@@ -22,6 +22,15 @@ export const wethAddress: Readable<string> = derived(
 	},
 	''
 )
+export const factoryAddress: Readable<string> = derived(
+	[contracts],
+	([$contracts], set) => {
+		if ($contracts.LPRescue) {
+			$contracts.LPRescue.factory().then((address: string) => set(address))
+		}
+	},
+	''
+)
 export const baseTokenSymbol: Readable<string> = derived(
 	[contracts],
 	([$contracts], set) => {

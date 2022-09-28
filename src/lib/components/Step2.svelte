@@ -11,10 +11,9 @@
 	import ErrorIcon from 'virtual:icons/ri/error-warning-line'
 
 	let inTransition = false
-	let buttonsDisabled = true
 
-	let baseTokenLoading = false
-	let mainTokenLoading = false
+	let baseTokenLoading = true // for initial allowance check
+	let mainTokenLoading = true // for initial allowance check
 	let baseTokenApproved = false
 	let mainTokenApproved = false
 	let baseTokenAllowance: BigNumber | null = null
@@ -77,7 +76,8 @@
 		// trigger initial approval check
 		if ($wethAddress) {
 			await checkTokenApproval()
-			buttonsDisabled = false
+			baseTokenLoading = false
+			mainTokenLoading = false
 		}
 	})()
 
@@ -119,7 +119,7 @@
 						type="button"
 						id="approve-base-token"
 						class={`btn btn-lg w-full gap-2 ${baseTokenApproved ? '!btn-success opacity-60' : 'btn-info'}`}
-						disabled={baseTokenApproved || baseTokenLoading || buttonsDisabled}
+						disabled={baseTokenApproved || baseTokenLoading}
 					>
 						{#if baseTokenApproved}
 							<CheckIcon />
@@ -144,7 +144,7 @@
 						type="button"
 						id="approve-main-token"
 						class={`btn btn-lg w-full gap-2 ${mainTokenApproved ? '!btn-success opacity-60' : 'btn-info'}`}
-						disabled={mainTokenApproved || mainTokenLoading || buttonsDisabled}
+						disabled={mainTokenApproved || mainTokenLoading}
 						on:click|preventDefault={() => approveToken($contracts.mainToken, $contracts.LPRescue.address)}
 					>
 						{#if mainTokenApproved}

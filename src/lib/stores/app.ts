@@ -2,7 +2,15 @@ import { writable, derived, get, type Writable, type Readable } from 'svelte/sto
 import { BigNumber, ethers, type Contract } from 'ethers'
 import type { WalletState } from '@web3-onboard/core'
 import { defaultEvmStores, chainId, signerAddress, contracts } from 'svelte-ethers-store'
-import { chains, chainData, defaultChain, defaultProvider, onboard, type SupportedChain } from '$lib/constants'
+import {
+	chains,
+	chainData,
+	defaultChain,
+	defaultProvider,
+	onboard,
+	type SupportedChain,
+	type SupportedAmm
+} from '$lib/constants'
 import LPRescue from '$lib/abi/LPRescue.json'
 
 /* stores */
@@ -12,6 +20,8 @@ export const activeChain: Writable<number> = writable(defaultChain)
 export const activeChainHex: Readable<string> = derived(activeChain, ($activeChain) =>
 	ethers.utils.hexlify($activeChain)
 )
+export const activeAmm: Writable<SupportedAmm> = writable('pcs')
+const testAmm: SupportedAmm = 'asdf'
 export const step: Writable<number> = writable(0)
 export const wethAddress: Readable<string> = derived(
 	[contracts],
@@ -109,10 +119,12 @@ export const onWalletChange = async (wallets: WalletState[]) => {
 			if (isValidChainId(chainIdTemp)) {
 				const provider = new ethers.providers.Web3Provider(wallets[0].provider, 'any')
 				defaultEvmStores.setProvider(provider)
-				if (chainData[chainIdTemp].rescueAddress !== ethers.constants.AddressZero) {
+				const amms: SupportedAmm[] = Object.keys(chainData[chainIdTemp].amm)
+				if (amms.length && chainData[chainIdTemp].amm[amms[0]].rescueAddress !== ethers.constants.AddressZero) {
+					activeAmm.set(amms[0])
 					await defaultEvmStores.attachContract(
 						'LPRescue',
-						chainData[chainIdTemp].rescueAddress,
+						chainData[chainIdTemp].amm[amms[0]].rescueAddress,
 						JSON.stringify(LPRescue)
 					)
 				}

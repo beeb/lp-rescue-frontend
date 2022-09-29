@@ -11,8 +11,13 @@ declare namespace App {
 }
 
 interface ChainData {
-	rescueAddress: string
+	amm: Record<string, AmmData>
 	commonTokens: Record<string, string>
+}
+
+interface AmmData {
+	routerAddress: string
+	rescueAddress: string
 }
 
 declare module '*.svg' {

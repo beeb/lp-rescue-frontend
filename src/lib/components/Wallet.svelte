@@ -24,7 +24,7 @@
 	})
 </script>
 
-<div class="flex gap-6">
+<div class="flex gap-2 md:gap-6">
 	<div class="dropdown dropdown-end">
 		<label
 			tabindex="0"
@@ -34,8 +34,10 @@
 		>
 			{#if isValidChainId($activeChain)}
 				<img src={`/chains/${$activeChain}.svg`} alt="" class="w-6 h-6" />
+				<span class="hidden md:inline">{chains[$activeChain].label}</span>
+			{:else}
+				Wrong network
 			{/if}
-			{(chains[$activeChain] && chains[$activeChain].label) || 'Wrong network'}
 			<ArrowDownIcon />
 		</label>
 		<ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-300 rounded-3xl w-60" id="chain-select">

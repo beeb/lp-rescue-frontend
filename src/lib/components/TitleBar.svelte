@@ -21,18 +21,18 @@
 	})
 </script>
 
-<div class="navbar px-6 gap-6 fixed">
-	<a href="/" class="flex-1" title="Home page"><Logo height="5rem" /></a>
+<div class="navbar px-6 gap-2 md:gap-6 fixed justify-end flex-wrap">
+	<a href="/" class="flex-1" title="Home page"><Logo class="h-10 md:h-20" /></a>
 	<div class="flex-none tooltip tooltip-left" data-tip="Toggle dark theme">
 		<button
 			type="button"
-			class="btn btn-sm btn-circle btn-outline gap-2 px-7 flex-nowrap"
+			class="btn btn-sm btn-outline gap-2 px-2 flex-nowrap"
 			data-toggle-theme="light,dark"
 			data-act-class="dark-enabled"
 			aria-label="Toggle dark theme"
 		>
-			<span class:opacity-50={$dark}><SunIcon /></span>
-			<span class:opacity-50={!$dark}><MoonIcon /></span>
+			<span class:hidden={$dark} class:md:block={$dark} class:opacity-50={$dark}><SunIcon /></span>
+			<span class:hidden={!$dark} class:md:block={!$dark} class:opacity-50={!$dark}><MoonIcon /></span>
 		</button>
 	</div>
 	<div class="flex-none">

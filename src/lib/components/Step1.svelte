@@ -199,7 +199,7 @@
 		animation: spin 2s linear infinite;
 		border-top-color: transparent;
 		border-left-color: transparent;
-		border-bottom-color: hsl(--bc);
-		border-right-color: hsl(--bc);
+		border-bottom-color: hsl(var(--bc));
+		border-right-color: hsl(var(--bc));
 	}
 </style>

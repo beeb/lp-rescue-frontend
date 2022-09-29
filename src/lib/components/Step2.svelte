@@ -110,7 +110,7 @@
 							Base Token {$baseTokenSymbol && `(${$baseTokenSymbol})`}
 						</span>
 
-						<span class="label-text-alt">
+						<span class="label-text-alt" class:text-error={!baseTokenApproved}>
 							Allowance:
 							{allowanceStatus($contracts.baseToken, baseTokenAllowance)}
 						</span>
@@ -136,7 +136,7 @@
 							Your Token {$mainTokenSymbol && `(${$mainTokenSymbol})`}
 						</span>
 
-						<span class="label-text-alt">
+						<span class="label-text-alt" class:text-error={!mainTokenApproved}>
 							Allowance:
 							{allowanceStatus($contracts.mainToken, mainTokenAllowance)}
 						</span>

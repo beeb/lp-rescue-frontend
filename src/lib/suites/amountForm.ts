@@ -15,17 +15,13 @@ export const suite = create('form', (data) => {
 		})
 	})
 	skipWhen(suite.get().hasErrors('baseTokenAmount'), () => {
-		test('baseTokenAmount', 'Amount needs to be more than current pair reserve', async () => {
-			if (!get(contracts).baseToken || !get(contracts).pair) {
+		test('baseTokenAmount', 'Amount needs to be more than current pair balance', async () => {
+			if (!get(contracts).baseToken) {
 				return
 			}
-			const [[reserve0, reserve1, _], token0] = await Promise.all([
-				get(contracts).pair.getReserves(),
-				get(contracts).pair.token0()
-			])
-			const reserve = token0 === ethers.utils.getAddress(get(contracts).baseToken.address) ? reserve0 : reserve1
+			const balance = await get(contracts).baseToken.balanceOf(get(contracts).pair.address)
 			const wei = ethers.utils.parseUnits(data.baseTokenAmount, get(baseTokenDecimals))
-			enforce(wei).condition((val) => val.gte(reserve))
+			enforce(wei).condition((val) => val.gte(balance))
 		})
 	})
 
@@ -39,17 +35,13 @@ export const suite = create('form', (data) => {
 		})
 	})
 	skipWhen(suite.get().hasErrors('mainTokenAmount'), () => {
-		test('mainTokenAmount', 'Amount needs to be more than current pair reserve', async () => {
-			if (!get(contracts).mainToken || !get(contracts).pair) {
+		test('mainTokenAmount', 'Amount needs to be more than current pair balance', async () => {
+			if (!get(contracts).mainToken) {
 				return
 			}
-			const [[reserve0, reserve1, _], token0] = await Promise.all([
-				get(contracts).pair.getReserves(),
-				get(contracts).pair.token0()
-			])
-			const reserve = token0 === ethers.utils.getAddress(get(contracts).mainToken.address) ? reserve0 : reserve1
+			const balance = await get(contracts).mainToken.balanceOf(get(contracts).pair.address)
 			const wei = ethers.utils.parseUnits(data.mainTokenAmount, get(mainTokenDecimals))
-			enforce(wei).condition((val) => val.gte(reserve))
+			enforce(wei).condition((val) => val.gte(balance))
 		})
 	})
 })

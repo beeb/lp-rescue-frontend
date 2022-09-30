@@ -1,6 +1,9 @@
 <script lang="ts">
 	import { chains, onboard, chainData } from '$lib/constants'
 	import { activeChain, activeChainHex, activeAmm, isValidChainId } from '$lib/stores/app'
+	import { defaultEvmStores } from 'svelte-ethers-store'
+	import { ethers } from 'ethers'
+	import LPRescue from '$lib/abi/LPRescue.json'
 	import ArrowDownIcon from 'virtual:icons/ri/arrow-down-s-line'
 </script>
 
@@ -60,6 +63,12 @@
 							class={`${
 								ammKey === $activeAmm ? 'bg-base-100 hover:bg-base-200 focus:bg-base-200 border border-primary' : ''
 							}`}
+							on:click={async () => {
+								if (amm.rescueAddress !== ethers.constants.AddressZero) {
+									activeAmm.set(ammKey)
+									await defaultEvmStores.attachContract('LPRescue', amm.rescueAddress, JSON.stringify(LPRescue))
+								}
+							}}
 						>
 							<img src={`/amm/${ammKey}.svg`} alt="" class="w-6 h-6" />
 							{amm.name}

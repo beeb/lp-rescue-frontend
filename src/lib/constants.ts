@@ -34,7 +34,7 @@ export const chainData: Record<number, ChainData> = {
 			pcs: {
 				name: 'PancakeSwap',
 				routerAddress: '0x10ED43C718714eb63d5aA57B78B54704E256024E',
-				rescueAddress: '0x0000000000000000000000000000000000000000'
+				rescueAddress: '0xbaB1e26127D601407A1E29F55C848BCAB33f6258'
 			}
 		}
 	},

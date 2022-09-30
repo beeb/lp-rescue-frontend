@@ -10,7 +10,8 @@
 		mainTokenDecimals
 	} from '$lib/stores/app'
 	import type { SuiteRunResult } from 'vest'
-	import { signerAddress } from 'svelte-ethers-store'
+	import { signerAddress, contracts } from 'svelte-ethers-store'
+	import { wethAddress } from '$lib/stores/app'
 	import classnames from 'vest/classnames'
 	import { suite } from '$lib/suites/amountForm'
 	import ErrorIcon from 'virtual:icons/ri/error-warning-line'
@@ -34,6 +35,7 @@
 	let baseTokenValidating = false
 	let mainTokenValidating = false
 	let inTransition = false
+	let loading = false
 
 	const handleChange = (name: string | undefined = undefined) => {
 		if (name === 'baseToken') {
@@ -50,6 +52,38 @@
 			baseTokenValidating = false
 			mainTokenValidating = false
 		})
+	}
+
+	const rescueLp = async () => {
+		if (!$contracts.LPRescue || !$contracts.baseToken || !$contracts.mainToken || !baseTokenWei || !mainTokenWei) {
+			console.error('Contract not found')
+			return
+		}
+		loading = true
+		try {
+			console.log($contracts.baseToken.address, $contracts.mainToken.address, $wethAddress)
+			let value = BigNumber.from('0')
+			if ($contracts.baseToken.address === $wethAddress) {
+				value = baseTokenWei
+			} else if ($contracts.mainToken.address === $wethAddress) {
+				value = mainTokenWei
+			}
+			const tx = await $contracts.LPRescue.addLiquidity(
+				$contracts.baseToken.address,
+				$contracts.mainToken.address,
+				baseTokenWei,
+				mainTokenWei,
+				$signerAddress,
+				{ value }
+			)
+			const receipt = await tx.wait()
+			return receipt.status === 1
+		} catch (e) {
+			console.error(e)
+			return false
+		} finally {
+			loading = false
+		}
 	}
 
 	$: cn = classnames(result, {
@@ -159,14 +193,14 @@
 				<div class="card w-full bg-base-300">
 					<div class="card-body p-4">
 						<h3 class="card-title text-lg">Prices</h3>
-						<div class="flex gap-2">
-							<div class="basis-1/2 flex flex-col items-center">
+						<div class="flex flex-wrap gap-2 justify-around">
+							<div class=" flex flex-col items-center">
 								<div>
 									{tokenPrice}
 								</div>
 								<div class="opacity-70">{$baseTokenSymbol} per {$mainTokenSymbol}</div>
 							</div>
-							<div class="basis-1/2 flex flex-col items-center">
+							<div class="flex flex-col items-center">
 								<div>
 									{tokenRate}
 								</div>
@@ -176,7 +210,15 @@
 					</div>
 				</div>
 				<div class="card-actions w-full justify-end">
-					<button type="button" class="btn btn-lg btn-info gap-2 font-comic text-xl uppercase" disabled={!valid}>
+					<button
+						type="button"
+						class="btn btn-lg btn-info gap-2 font-comic text-xl uppercase"
+						disabled={!valid || loading}
+						on:click={() => rescueLp()}
+					>
+						{#if loading}
+							<div class="loader" />
+						{/if}
 						<span class="text-3xl">+</span> Rescue LP
 					</button>
 				</div>

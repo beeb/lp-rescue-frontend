@@ -9,6 +9,7 @@
 		baseTokenDecimals,
 		mainTokenDecimals
 	} from '$lib/stores/app'
+	import type { SuiteRunResult } from 'vest'
 	import { signerAddress } from 'svelte-ethers-store'
 	import classnames from 'vest/classnames'
 	import { suite } from '$lib/suites/amountForm'
@@ -30,10 +31,25 @@
 	let tokenPrice: string = '-'
 	let tokenRate: string = '-'
 	let result = suite(formState)
+	let baseTokenValidating = false
+	let mainTokenValidating = false
 	let inTransition = false
 
-	const handleChange = () => {
+	const handleChange = (name: string | undefined = undefined) => {
+		if (name === 'baseToken') {
+			baseTokenValidating = true
+		} else if (name === 'mainToken') {
+			mainTokenValidating = true
+		}
+
 		result = suite(formState)
+
+		result.done((res) => {
+			// after async validation is done
+			result = res as SuiteRunResult
+			baseTokenValidating = false
+			mainTokenValidating = false
+		})
 	}
 
 	$: cn = classnames(result, {
@@ -92,7 +108,9 @@
 				<div class="form-control w-full">
 					<label class="label" for="base-token-amount">
 						<span class="label-text text-lg">Base Token Amount</span>
-						{#if result.hasErrors('baseTokenAmount')}
+						{#if baseTokenValidating}
+							<span class="label-text-alt"><div class="loader" /></span>
+						{:else if result.hasErrors('baseTokenAmount')}
 							<span class="label-text-alt text-error">{result.getErrors('baseTokenAmount')[0]}</span>
 						{:else if result.hasWarnings('baseTokenAmount')}
 							<span class="label-text-alt text-warning">
@@ -107,7 +125,7 @@
 							placeholder="0.0"
 							class={`input input-bordered input-lg grow ${cn('baseTokenAmount')}`}
 							bind:value={formState.baseTokenAmount}
-							on:input={() => handleChange()}
+							on:input={() => handleChange('baseToken')}
 						/>
 						<span class="pr-6">{$baseTokenSymbol}</span>
 					</label>
@@ -116,7 +134,9 @@
 				<div class="form-control w-full -mt-6">
 					<label class="label" for="main-token-amount">
 						<span class="label-text text-lg">Main Token Amount</span>
-						{#if result.hasErrors('mainTokenAmount')}
+						{#if mainTokenValidating}
+							<span class="label-text-alt"><div class="loader" /></span>
+						{:else if result.hasErrors('mainTokenAmount')}
 							<span class="label-text-alt text-error">{result.getErrors('mainTokenAmount')[0]}</span>
 						{:else if result.hasWarnings('mainTokenAmount')}
 							<span class="label-text-alt text-warning">
@@ -131,7 +151,7 @@
 							placeholder="0.0"
 							class={`input input-bordered input-lg grow ${cn('mainTokenAmount')}`}
 							bind:value={formState.mainTokenAmount}
-							on:input={() => handleChange()}
+							on:input={() => handleChange('mainToken')}
 						/>
 						<span class="pr-6">{$mainTokenSymbol}</span>
 					</label>
@@ -185,3 +205,20 @@
 		</button>
 	</div>
 {/if}
+
+<style>
+	.loader {
+		height: 1rem;
+		width: 1rem;
+		border-radius: 9999px;
+		border-width: 2px;
+		animation: spin 2s linear infinite;
+		border-top-color: transparent;
+		border-left-color: transparent;
+		border-bottom-color: hsl(var(--bc));
+		border-right-color: hsl(var(--bc));
+	}
+	.label-text-alt {
+		@apply text-base;
+	}
+</style>

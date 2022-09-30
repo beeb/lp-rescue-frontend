@@ -4,7 +4,8 @@
 	import { step, activeChain, isTokenApproved, wethAddress, baseTokenSymbol, mainTokenSymbol } from '$lib/stores/app'
 	import { chains } from '$lib/constants'
 	import { contracts, signerAddress } from 'svelte-ethers-store'
-	import { BigNumber, ethers, type Contract } from 'ethers'
+	import { BigNumber, ethers, type Contract, type ContractReceipt } from 'ethers'
+	import { getNotificationsContext } from 'svelte-notifications'
 	import ArrowRightIcon from 'virtual:icons/ri/arrow-right-s-line'
 	import ArrowLeftIcon from 'virtual:icons/ri/arrow-left-s-line'
 	import CheckIcon from 'virtual:icons/ri/check-line'
@@ -19,6 +20,8 @@
 	let baseTokenAllowance: BigNumber | null = null
 	let mainTokenAllowance: BigNumber | null = null
 
+	const { addNotification } = getNotificationsContext()
+
 	const approveToken = async (token: Contract | undefined, spender: string) => {
 		if (!token) {
 			return false
@@ -30,10 +33,29 @@
 		}
 		try {
 			const tx = await token.approve(spender, ethers.constants.MaxUint256)
-			const receipt = await tx.wait()
+			const receipt: ContractReceipt = await tx.wait()
+			if (receipt.status === 1) {
+				addNotification({
+					type: 'success',
+					position: 'bottom-left',
+					text: `Approval transaction succeeded: <a href="${chains[$activeChain].blockExplorerUrl}/tx/${receipt.transactionHash}" class="link" target="_blank">see in block explorer</a>.`
+				})
+			} else {
+				addNotification({
+					type: 'error',
+					position: 'bottom-left',
+					text: `Approval transaction failed: <a href="${chains[$activeChain].blockExplorerUrl}/tx/${receipt.transactionHash}" class="link" target="_blank">see in block explorer</a>.`
+				})
+			}
 			return receipt.status === 1
 		} catch (e) {
 			console.error(e)
+			addNotification({
+				type: 'error',
+				position: 'bottom-left',
+				text: `Approval error: ${e}.`,
+				removeAfter: 5000
+			})
 			return false
 		} finally {
 			if (token.address === $contracts.baseToken?.address) {

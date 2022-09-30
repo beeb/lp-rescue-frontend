@@ -13,10 +13,11 @@
 	import { signerAddress, contracts } from 'svelte-ethers-store'
 	import { wethAddress } from '$lib/stores/app'
 	import classnames from 'vest/classnames'
+	import { ethers, BigNumber, FixedNumber } from 'ethers'
 	import { suite } from '$lib/suites/amountForm'
+	import { getNotificationsContext } from 'svelte-notifications'
 	import ErrorIcon from 'virtual:icons/ri/error-warning-line'
 	import ArrowLeftIcon from 'virtual:icons/ri/arrow-left-s-line'
-	import { ethers, BigNumber, FixedNumber } from 'ethers'
 
 	interface Fields {
 		baseTokenAmount: string
@@ -36,6 +37,8 @@
 	let mainTokenValidating = false
 	let inTransition = false
 	let loading = false
+
+	const { addNotification } = getNotificationsContext()
 
 	const handleChange = (name: string | undefined = undefined) => {
 		if (name === 'baseToken') {
@@ -77,9 +80,28 @@
 				{ value }
 			)
 			const receipt = await tx.wait()
+			if (receipt.status === 1) {
+				addNotification({
+					type: 'success',
+					position: 'bottom-left',
+					text: `Liquidity transaction succeeded: <a href="${chains[$activeChain].blockExplorerUrl}/tx/${receipt.transactionHash}" class="link" target="_blank">see in block explorer</a>.`
+				})
+			} else {
+				addNotification({
+					type: 'error',
+					position: 'bottom-left',
+					text: `Liquidity transaction failed: <a href="${chains[$activeChain].blockExplorerUrl}/tx/${receipt.transactionHash}" class="link" target="_blank">see in block explorer</a>.`
+				})
+			}
 			return receipt.status === 1
 		} catch (e) {
 			console.error(e)
+			addNotification({
+				type: 'error',
+				position: 'bottom-left',
+				text: `Transaction error: ${e}.`,
+				removeAfter: 5000
+			})
 			return false
 		} finally {
 			loading = false

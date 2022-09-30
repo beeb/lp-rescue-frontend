@@ -117,7 +117,10 @@
 							bind:value={formState.baseToken}
 							on:input={() => handleChange('baseToken')}
 						/>
-						<select class="select select-bordered select-lg" on:change|preventDefault={(e) => onSelectBaseToken(e)}>
+						<select
+							class="select select-bordered select-lg pr-10"
+							on:change|preventDefault={(e) => onSelectBaseToken(e)}
+						>
 							<option disabled selected>Common</option>
 							{#each Object.entries(chainData[$activeChain].commonTokens) as [token, tokenAddress] (tokenAddress)}
 								<option value={tokenAddress}>{token}</option>

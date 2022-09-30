@@ -75,7 +75,9 @@
 
 	$: valid = result.isValid()
 
-	$: _ = $factoryAddress // trigger reactivity
+	$: {
+		$factoryAddress
+	} // trigger reactivity
 </script>
 
 <div

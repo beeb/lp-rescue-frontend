@@ -1,11 +1,20 @@
 <script lang="ts">
 	import { fly } from 'svelte/transition'
 	import { chains } from '$lib/constants'
-	import { step, activeChain, baseTokenSymbol, mainTokenSymbol } from '$lib/stores/app'
+	import {
+		step,
+		activeChain,
+		baseTokenSymbol,
+		mainTokenSymbol,
+		baseTokenDecimals,
+		mainTokenDecimals
+	} from '$lib/stores/app'
 	import { signerAddress } from 'svelte-ethers-store'
+	import classnames from 'vest/classnames'
+	import { suite } from '$lib/suites/amountForm'
 	import ErrorIcon from 'virtual:icons/ri/error-warning-line'
-	import ArrowRightIcon from 'virtual:icons/ri/arrow-right-s-line'
 	import ArrowLeftIcon from 'virtual:icons/ri/arrow-left-s-line'
+	import { ethers, BigNumber, FixedNumber } from 'ethers'
 
 	interface Fields {
 		baseTokenAmount: string
@@ -16,10 +25,54 @@
 		baseTokenAmount: '',
 		mainTokenAmount: ''
 	}
-
+	let baseTokenWei: BigNumber | null = null
+	let mainTokenWei: BigNumber | null = null
+	let tokenPrice: string = '-'
+	let tokenRate: string = '-'
+	let result = suite(formState)
 	let inTransition = false
 
-	$: valid = true
+	const handleChange = () => {
+		result = suite(formState)
+	}
+
+	$: cn = classnames(result, {
+		valid: 'input-success',
+		warning: 'input-warning',
+		invalid: 'input-error'
+	})
+
+	$: valid = result.isValid()
+
+	$: {
+		try {
+			baseTokenWei = ethers.utils.parseUnits(formState.baseTokenAmount, $baseTokenDecimals)
+		} catch {
+			baseTokenWei = null
+		}
+	}
+	$: {
+		try {
+			mainTokenWei = ethers.utils.parseUnits(formState.mainTokenAmount, $mainTokenDecimals)
+		} catch {
+			mainTokenWei = null
+		}
+	}
+	$: {
+		if (baseTokenWei && mainTokenWei) {
+			const baseTokenNormalizeFactor = BigNumber.from('10').pow(BigNumber.from('18').sub($baseTokenDecimals))
+			const baseTokenNormalized = baseTokenWei.mul(baseTokenNormalizeFactor)
+			const mainTokenNormalizeFactor = BigNumber.from('10').pow(BigNumber.from('18').sub($mainTokenDecimals))
+			const mainTokenNormalized = mainTokenWei.mul(mainTokenNormalizeFactor)
+			try {
+				tokenPrice = FixedNumber.from(baseTokenNormalized).divUnsafe(FixedNumber.from(mainTokenNormalized)).toString()
+				tokenRate = FixedNumber.from(mainTokenNormalized).divUnsafe(FixedNumber.from(baseTokenNormalized)).toString()
+			} catch {
+				tokenPrice = '-'
+				tokenRate = '-'
+			}
+		}
+	}
 </script>
 
 <div
@@ -38,16 +91,23 @@
 			<form on:submit|preventDefault class="flex flex-col gap-6 items-center">
 				<div class="form-control w-full">
 					<label class="label" for="base-token-amount">
-						<span class="label-text text-lg">Base Token</span>
+						<span class="label-text text-lg">Base Token Amount</span>
+						{#if result.hasErrors('baseTokenAmount')}
+							<span class="label-text-alt text-error">{result.getErrors('baseTokenAmount')[0]}</span>
+						{:else if result.hasWarnings('baseTokenAmount')}
+							<span class="label-text-alt text-warning">
+								{result.getWarnings('baseTokenAmount')[0]}
+							</span>
+						{/if}
 					</label>
 					<label class="input-group input-group-lg">
 						<input
 							id="base-token-amount"
 							type="text"
 							placeholder="0.0"
-							class={`input input-bordered input-lg grow`}
+							class={`input input-bordered input-lg grow ${cn('baseTokenAmount')}`}
 							bind:value={formState.baseTokenAmount}
-							on:input={() => {}}
+							on:input={() => handleChange()}
 						/>
 						<span class="pr-6">{$baseTokenSymbol}</span>
 					</label>
@@ -55,16 +115,23 @@
 				<div class="text-3xl font-comic">+</div>
 				<div class="form-control w-full -mt-6">
 					<label class="label" for="main-token-amount">
-						<span class="label-text text-lg">Main Token</span>
+						<span class="label-text text-lg">Main Token Amount</span>
+						{#if result.hasErrors('mainTokenAmount')}
+							<span class="label-text-alt text-error">{result.getErrors('mainTokenAmount')[0]}</span>
+						{:else if result.hasWarnings('mainTokenAmount')}
+							<span class="label-text-alt text-warning">
+								{result.getWarnings('mainTokenAmount')[0]}
+							</span>
+						{/if}
 					</label>
 					<label class="input-group input-group-lg">
 						<input
 							id="main-token-amount"
 							type="text"
 							placeholder="0.0"
-							class={`input input-bordered input-lg grow`}
+							class={`input input-bordered input-lg grow ${cn('mainTokenAmount')}`}
 							bind:value={formState.mainTokenAmount}
-							on:input={() => {}}
+							on:input={() => handleChange()}
 						/>
 						<span class="pr-6">{$mainTokenSymbol}</span>
 					</label>
@@ -72,11 +139,24 @@
 				<div class="card w-full bg-base-300">
 					<div class="card-body p-4">
 						<h3 class="card-title text-lg">Prices</h3>
-						Calculation
+						<div class="flex gap-2">
+							<div class="basis-1/2 flex flex-col items-center">
+								<div>
+									{tokenPrice}
+								</div>
+								<div class="opacity-70">{$baseTokenSymbol} per {$mainTokenSymbol}</div>
+							</div>
+							<div class="basis-1/2 flex flex-col items-center">
+								<div>
+									{tokenRate}
+								</div>
+								<div class="opacity-70">{$mainTokenSymbol} per {$baseTokenSymbol}</div>
+							</div>
+						</div>
 					</div>
 				</div>
 				<div class="card-actions w-full justify-end">
-					<button type="button" class="btn btn-lg btn-info gap-2 font-comic text-xl uppercase">
+					<button type="button" class="btn btn-lg btn-info gap-2 font-comic text-xl uppercase" disabled={!valid}>
 						<span class="text-3xl">+</span> Rescue LP
 					</button>
 				</div>

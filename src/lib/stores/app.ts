@@ -1,5 +1,5 @@
 import { writable, derived, get, type Writable, type Readable } from 'svelte/store'
-import { BigNumber, ethers, type Contract } from 'ethers'
+import { BigNumber, ethers, type Contract, type BigNumberish } from 'ethers'
 import type { WalletState } from '@web3-onboard/core'
 import { defaultEvmStores, chainId, signerAddress, contracts } from 'svelte-ethers-store'
 import {
@@ -79,6 +79,26 @@ export const mainTokenName: Readable<string> = derived(
 		}
 	},
 	''
+)
+export const baseTokenDecimals: Readable<BigNumberish> = derived(
+	[contracts],
+	([$contracts], set) => {
+		if ($contracts.baseToken) {
+			$contracts.baseToken.decimals().then((decimals: BigNumberish) => {
+				set(decimals)
+			})
+		}
+	},
+	ethers.BigNumber.from(18) as BigNumberish
+)
+export const mainTokenDecimals: Readable<BigNumberish> = derived(
+	[contracts],
+	([$contracts], set) => {
+		if ($contracts.mainToken) {
+			$contracts.mainToken.decimals().then((decimals: BigNumberish) => set(decimals))
+		}
+	},
+	ethers.BigNumber.from(18) as BigNumberish
 )
 
 export const isTokenApproved = async (

@@ -50,7 +50,7 @@ export const chainData: Record<number, ChainData> = {
 			pcs: {
 				name: 'TPancakeSwap',
 				routerAddress: '0x9Ac64Cc6e4415144C455BD8E4837Fea55603e5c3',
-				rescueAddress: '0x3137311847574Ef86ef1141E6D2B47FD08912cc8'
+				rescueAddress: '0xE1284f70baeB5BD24344cB7c5ad66c023F831f04'
 			}
 		}
 	}

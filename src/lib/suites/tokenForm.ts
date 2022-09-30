@@ -31,14 +31,12 @@ export const suite = create('form', (data) => {
 		})
 		test('baseToken', 'Your balance is zero', async () => {
 			warn()
-			if (!get(contracts).baseToken || !get(signerAddress)) {
+			const weth = get(wethAddress)
+			if (!get(contracts).baseToken || !get(signerAddress) || !weth) {
 				return
 			}
-			const weth = get(wethAddress)
-			if (weth) {
-				if (ethers.utils.getAddress(data.baseToken) === weth) {
-					return
-				}
+			if (ethers.utils.getAddress(data.baseToken) === weth) {
+				return
 			}
 			try {
 				const balance: BigNumber = await get(contracts).baseToken.balanceOf(get(signerAddress))
@@ -70,14 +68,12 @@ export const suite = create('form', (data) => {
 		})
 		test('mainToken', 'Your balance is zero', async () => {
 			warn()
-			if (!get(contracts).mainToken || !get(signerAddress)) {
+			const weth = get(wethAddress)
+			if (!get(contracts).mainToken || !get(signerAddress) || weth) {
 				return
 			}
-			const weth = get(wethAddress)
-			if (weth) {
-				if (ethers.utils.getAddress(data.mainToken) === weth) {
-					return
-				}
+			if (ethers.utils.getAddress(data.mainToken) === weth) {
+				return
 			}
 			try {
 				const balance: BigNumber = await get(contracts).mainToken.balanceOf(get(signerAddress))

@@ -38,7 +38,7 @@
 			<form on:submit|preventDefault class="flex flex-col gap-6 items-center">
 				<div class="form-control w-full">
 					<label class="label" for="base-token-amount">
-						<span class="label-text">Base Token</span>
+						<span class="label-text text-lg">Base Token</span>
 					</label>
 					<label class="input-group input-group-lg">
 						<input
@@ -55,7 +55,7 @@
 				<div class="text-3xl font-comic">+</div>
 				<div class="form-control w-full -mt-6">
 					<label class="label" for="main-token-amount">
-						<span class="label-text">Main Token</span>
+						<span class="label-text text-lg">Main Token</span>
 					</label>
 					<label class="input-group input-group-lg">
 						<input

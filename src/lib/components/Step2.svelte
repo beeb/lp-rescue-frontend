@@ -106,11 +106,11 @@
 			<form on:submit|preventDefault class="flex flex-col gap-6">
 				<div class="form-control">
 					<label class="label" for="approve-base-token">
-						<span class="label-text">
+						<span class="label-text text-lg">
 							Base Token {$baseTokenSymbol && `(${$baseTokenSymbol})`}
 						</span>
 
-						<span class="label-text-alt" class:text-error={!baseTokenApproved}>
+						<span class="label-text-alt text-base" class:text-error={!baseTokenApproved}>
 							Allowance:
 							{allowanceStatus($contracts.baseToken, baseTokenAllowance)}
 						</span>
@@ -132,11 +132,11 @@
 				</div>
 				<div class="form-control">
 					<label class="label" for="approve-main-token">
-						<span class="label-text">
+						<span class="label-text text-lg">
 							Your Token {$mainTokenSymbol && `(${$mainTokenSymbol})`}
 						</span>
 
-						<span class="label-text-alt" class:text-error={!mainTokenApproved}>
+						<span class="label-text-alt text-base" class:text-error={!mainTokenApproved}>
 							Allowance:
 							{allowanceStatus($contracts.mainToken, mainTokenAllowance)}
 						</span>

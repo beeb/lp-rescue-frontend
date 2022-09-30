@@ -90,7 +90,7 @@
 			<form on:submit|preventDefault class="flex flex-col gap-6">
 				<div class="form-control">
 					<label class="label" for="base-token">
-						<span class="label-text">Base Token</span>
+						<span class="label-text text-lg">Base Token</span>
 						{#if baseTokenValidating}
 							<span class="label-text-alt"><div class="loader" /></span>
 						{:else if result.hasErrors('baseToken')}
@@ -108,16 +108,16 @@
 							</span>
 						{/if}
 					</label>
-					<label class="input-group">
+					<label class="input-group input-group-lg">
 						<input
 							id="base-token"
 							type="text"
 							placeholder="0x..."
-							class={`input input-bordered grow ${cn('baseToken')}`}
+							class={`input input-bordered input-lg grow ${cn('baseToken')}`}
 							bind:value={formState.baseToken}
 							on:input={() => handleChange('baseToken')}
 						/>
-						<select class="select select-bordered" on:change|preventDefault={(e) => onSelectBaseToken(e)}>
+						<select class="select select-bordered select-lg" on:change|preventDefault={(e) => onSelectBaseToken(e)}>
 							<option disabled selected>Common</option>
 							{#each Object.entries(chainData[$activeChain].commonTokens) as [token, tokenAddress] (tokenAddress)}
 								<option value={tokenAddress}>{token}</option>
@@ -127,7 +127,7 @@
 				</div>
 				<div class="form-control">
 					<label class="label" for="main-token">
-						<span class="label-text">Your Token</span>
+						<span class="label-text text-lg">Your Token</span>
 						{#if mainTokenValidating}
 							<span class="label-text-alt"><div class="loader" /></span>
 						{:else if result.hasErrors('mainToken')}
@@ -148,7 +148,7 @@
 					<input
 						type="text"
 						placeholder="0x..."
-						class={`input input-bordered grow ${cn('mainToken')}`}
+						class={`input input-bordered input-lg grow ${cn('mainToken')}`}
 						bind:value={formState.mainToken}
 						on:input={() => handleChange('mainToken')}
 					/>
@@ -201,5 +201,8 @@
 		border-left-color: transparent;
 		border-bottom-color: hsl(var(--bc));
 		border-right-color: hsl(var(--bc));
+	}
+	.label-text-alt {
+		@apply text-base;
 	}
 </style>

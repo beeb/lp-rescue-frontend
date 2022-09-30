@@ -22,7 +22,7 @@
 	})
 </script>
 
-<div class="navbar px-6 gap-2 md:gap-6 fixed justify-end flex-wrap">
+<div class="navbar px-6 gap-2 md:gap-6 justify-end flex-wrap">
 	<a href="/" class="flex-1" title="Home page"><Logo class="h-10 md:h-20" /></a>
 	<div class="flex-none tooltip tooltip-left" data-tip="Toggle dark theme">
 		<button

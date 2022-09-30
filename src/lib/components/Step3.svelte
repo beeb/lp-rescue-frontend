@@ -60,6 +60,11 @@
 	const rescueLp = async () => {
 		if (!$contracts.LPRescue || !$contracts.baseToken || !$contracts.mainToken || !baseTokenWei || !mainTokenWei) {
 			console.error('Contract not found')
+			addNotification({
+				type: 'error',
+				position: 'bottom-left',
+				text: `Contract object not found. Please raise an issue on <a href="https://github.com/beeb/lp-rescue-frontend">Github</a>.`
+			})
 			return
 		}
 		loading = true

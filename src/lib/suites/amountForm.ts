@@ -1,6 +1,7 @@
 import { get } from 'svelte/store'
 import { create, enforce, test, skipWhen } from 'vest'
-import { ethers } from 'ethers'
+import 'vest/enforce/compounds'
+import { ethers, BigNumber } from 'ethers'
 import { baseTokenDecimals, mainTokenDecimals } from '$lib/stores/app'
 import { contracts } from 'svelte-ethers-store'
 
@@ -42,6 +43,16 @@ export const suite = create('form', (data) => {
 			const balance = await get(contracts).mainToken.balanceOf(get(contracts).pair.address)
 			const wei = ethers.utils.parseUnits(data.mainTokenAmount, get(mainTokenDecimals))
 			enforce(wei).condition((val) => val.gte(balance))
+		})
+		test('mainTokenAmount', 'Pair is not stuck', async () => {
+			if (!get(contracts).pair) {
+				return
+			}
+			const [reserve0, reserve1, _]: [BigNumber, BigNumber, unknown] = await get(contracts).pair.getReserves()
+			enforce([reserve0, reserve1]).anyOf(
+				enforce.condition(([res0, res1]: [BigNumber, BigNumber]) => res0.gt(0) && res1.lte(0)),
+				enforce.condition(([res0, res1]: [BigNumber, BigNumber]) => res0.lte(0) && res1.gt(0))
+			)
 		})
 	})
 })

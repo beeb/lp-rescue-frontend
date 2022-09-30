@@ -83,6 +83,9 @@
 			return false
 		} finally {
 			loading = false
+			setTimeout(() => {
+				handleChange()
+			}, 500)
 		}
 	}
 

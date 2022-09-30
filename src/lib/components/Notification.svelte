@@ -10,7 +10,7 @@
 </script>
 
 <div
-	class="toast toast-start toast-bottom toast-"
+	class="toast flex max-w-[90%] min-w-0"
 	class:toast-start={notification.position === 'top-left' || notification.position === 'bottom-left'}
 	class:toast-center={notification.position === 'top-center' || notification.position === 'bottom-center'}
 	class:toast-end={notification.position === 'top-right' || notification.position == 'bottom-right'}
@@ -18,13 +18,13 @@
 	class:toast-bottom={notification.position === 'bottom-left' || notification.position == 'bottom-right'}
 >
 	<div
-		class="alert"
+		class="alert flex-grow items-start"
 		class:alert-error={notification.type === 'error'}
 		class:alert-success={notification.type === 'success'}
 		class:alert-warning={notification.type === 'warning'}
 		class:alert-info={notification.type === 'info'}
 	>
-		<div>
+		<div class="overflow-hidden max-w-full">
 			<span>{@html notification.text}</span>
 		</div>
 		<div class="flex-none">

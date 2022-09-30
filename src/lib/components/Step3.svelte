@@ -99,7 +99,8 @@
 			addNotification({
 				type: 'error',
 				position: 'bottom-left',
-				text: `Transaction error: ${e}.`
+				text: `Transaction error: ${e}.`,
+				removeAfter: 5000
 			})
 			return false
 		} finally {

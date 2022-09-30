@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte'
 	import { themeChange } from 'theme-change'
+	import ChainSelect from './ChainSelect.svelte'
 	import Wallet from './Wallet.svelte'
 	import Logo from '$lib/assets/logo-halftone.svg?component'
 	import SunIcon from 'virtual:icons/ri/sun-line'
@@ -34,6 +35,9 @@
 			<span class:hidden={$dark} class:md:block={$dark} class:opacity-50={$dark}><SunIcon /></span>
 			<span class:hidden={!$dark} class:md:block={!$dark} class:opacity-50={!$dark}><MoonIcon /></span>
 		</button>
+	</div>
+	<div class="flex-none">
+		<ChainSelect />
 	</div>
 	<div class="flex-none">
 		<Wallet />

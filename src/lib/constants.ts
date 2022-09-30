@@ -32,6 +32,7 @@ export const chainData: Record<number, ChainData> = {
 		},
 		amm: {
 			pcs: {
+				name: 'PancakeSwap',
 				routerAddress: '0x10ED43C718714eb63d5aA57B78B54704E256024E',
 				rescueAddress: '0x0000000000000000000000000000000000000000'
 			}
@@ -47,6 +48,7 @@ export const chainData: Record<number, ChainData> = {
 		},
 		amm: {
 			pcs: {
+				name: 'TPancakeSwap',
 				routerAddress: '0x9Ac64Cc6e4415144C455BD8E4837Fea55603e5c3',
 				rescueAddress: '0x3137311847574Ef86ef1141E6D2B47FD08912cc8'
 			}

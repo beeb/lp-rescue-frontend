@@ -16,6 +16,7 @@ interface ChainData {
 }
 
 interface AmmData {
+	name: string
 	routerAddress: string
 	rescueAddress: string
 }

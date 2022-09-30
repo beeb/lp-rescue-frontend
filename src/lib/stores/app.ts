@@ -21,7 +21,6 @@ export const activeChainHex: Readable<string> = derived(activeChain, ($activeCha
 	ethers.utils.hexlify($activeChain)
 )
 export const activeAmm: Writable<SupportedAmm> = writable('pcs')
-const testAmm: SupportedAmm = 'asdf'
 export const step: Writable<number> = writable(0)
 export const wethAddress: Readable<string> = derived(
 	[contracts],

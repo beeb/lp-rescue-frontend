@@ -6,6 +6,11 @@ This web application allows to interact with the [LP Rescue Contract](https://gi
 get Uniswap v2 or Pancakeswap v2 liquidity pools unstuck after they have been exploited by malicious actors. Check the
 link above for more details.
 
+## Supported chains and AMMs
+
+At the moment, only **BNB Smart Chain** and **PancakeSwap v2** are supported. If you need it for another chain or DEX, please [open
+a new issue](https://github.com/beeb/lp-rescue-frontend/issues/new).
+
 ## Developing
 
 Once you've installed dependencies with `pnpm install`, start a development server:

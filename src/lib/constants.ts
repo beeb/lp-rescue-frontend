@@ -9,13 +9,15 @@ export const chains: Record<number, Chain> = {
 		id: '0x38',
 		token: 'BNB',
 		label: 'BNB Smart Chain',
-		rpcUrl: 'https://bsc-dataseed.binance.org'
+		rpcUrl: 'https://bsc-dataseed.binance.org',
+		blockExplorerUrl: 'https://bscscan.com'
 	},
 	97: {
 		id: '0x61',
 		token: 'tBNB',
 		label: 'BSC Testnet',
-		rpcUrl: 'https://data-seed-prebsc-1-s1.binance.org:8545'
+		rpcUrl: 'https://data-seed-prebsc-1-s1.binance.org:8545',
+		blockExplorerUrl: 'https://testnet.bscscan.com'
 	}
 }
 

@@ -171,7 +171,7 @@
 			<form on:submit|preventDefault class="flex flex-col gap-6 items-center">
 				<div class="form-control w-full">
 					<label class="label" for="base-token-amount">
-						<span class="label-text text-lg">Base Token Amount</span>
+						<span class="label-text sm:text-lg">Base Token Amount</span>
 						{#if baseTokenValidating}
 							<span class="label-text-alt"><div class="loader" /></span>
 						{:else if result.hasErrors('baseTokenAmount')}
@@ -182,12 +182,12 @@
 							</span>
 						{/if}
 					</label>
-					<label class="input-group input-group-lg">
+					<label class="input-group sm:input-group-lg">
 						<input
 							id="base-token-amount"
 							type="text"
 							placeholder="0.0"
-							class={`input input-bordered input-lg grow ${cn('baseTokenAmount')}`}
+							class={`input input-bordered sm:input-lg flex-auto min-w-0 ${cn('baseTokenAmount')}`}
 							bind:value={formState.baseTokenAmount}
 							on:input={() => handleChange('baseToken')}
 						/>
@@ -197,7 +197,7 @@
 				<div class="text-3xl font-comic">+</div>
 				<div class="form-control w-full -mt-6">
 					<label class="label" for="main-token-amount">
-						<span class="label-text text-lg">Main Token Amount</span>
+						<span class="label-text sm:text-lg">Main Token Amount</span>
 						{#if mainTokenValidating}
 							<span class="label-text-alt"><div class="loader" /></span>
 						{:else if result.hasErrors('mainTokenAmount')}
@@ -208,12 +208,12 @@
 							</span>
 						{/if}
 					</label>
-					<label class="input-group input-group-lg">
+					<label class="input-group sm:input-group-lg">
 						<input
 							id="main-token-amount"
 							type="text"
 							placeholder="0.0"
-							class={`input input-bordered input-lg grow ${cn('mainTokenAmount')}`}
+							class={`input input-bordered sm:input-lg flex-auto min-w-0 ${cn('mainTokenAmount')}`}
 							bind:value={formState.mainTokenAmount}
 							on:input={() => handleChange('mainToken')}
 						/>
@@ -222,7 +222,7 @@
 				</div>
 				<div class="card w-full bg-base-300">
 					<div class="card-body p-4">
-						<h3 class="card-title text-lg">Prices</h3>
+						<h3 class="card-title sm:text-lg">Prices</h3>
 						<div class="flex flex-col sm:flex-row gap-2 justify-evenly items-center">
 							<div class=" flex flex-col items-center">
 								<div>
@@ -230,7 +230,7 @@
 								</div>
 								<div class="opacity-70">{$baseTokenSymbol} per {$mainTokenSymbol}</div>
 							</div>
-							<div class="divider divider-vertical sm:divider-horizontal" />
+							<div class="divider divider-vertical sm:divider-horizontal my-1 sm:my-0 mx-0 sm:mx-1" />
 							<div class="flex flex-col items-center">
 								<div>
 									{tokenRate}
@@ -292,6 +292,6 @@
 		border-right-color: hsl(var(--bc));
 	}
 	.label-text-alt {
-		@apply text-base;
+		@apply sm:text-base;
 	}
 </style>

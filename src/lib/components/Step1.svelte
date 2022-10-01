@@ -92,7 +92,7 @@
 			<form on:submit|preventDefault class="flex flex-col gap-6">
 				<div class="form-control">
 					<label class="label" for="base-token">
-						<span class="label-text text-lg">Base Token</span>
+						<span class="label-text sm:text-lg">Base Token</span>
 						{#if baseTokenValidating}
 							<span class="label-text-alt"><div class="loader" /></span>
 						{:else if result.hasErrors('baseToken')}
@@ -110,17 +110,17 @@
 							</span>
 						{/if}
 					</label>
-					<label class="input-group input-group-lg">
+					<label class="input-group sm:input-group-lg">
 						<input
 							id="base-token"
 							type="text"
 							placeholder="0x..."
-							class={`input input-bordered input-lg grow ${cn('baseToken')}`}
+							class={`input input-bordered sm:input-lg flex-auto min-w-0 ${cn('baseToken')}`}
 							bind:value={formState.baseToken}
 							on:input={() => handleChange('baseToken')}
 						/>
 						<select
-							class="select select-bordered select-lg pr-10"
+							class="select select-bordered sm:select-lg pr-10"
 							on:change|preventDefault={(e) => onSelectBaseToken(e)}
 						>
 							<option disabled selected>Common</option>
@@ -132,7 +132,7 @@
 				</div>
 				<div class="form-control">
 					<label class="label" for="main-token">
-						<span class="label-text text-lg">Your Token</span>
+						<span class="label-text sm:text-lg">Your Token</span>
 						{#if mainTokenValidating}
 							<span class="label-text-alt"><div class="loader" /></span>
 						{:else if result.hasErrors('mainToken')}
@@ -153,7 +153,7 @@
 					<input
 						type="text"
 						placeholder="0x..."
-						class={`input input-bordered input-lg grow ${cn('mainToken')}`}
+						class={`input input-bordered sm:input-lg flex-auto ${cn('mainToken')}`}
 						bind:value={formState.mainToken}
 						on:input={() => handleChange('mainToken')}
 					/>
@@ -208,6 +208,6 @@
 		border-right-color: hsl(var(--bc));
 	}
 	.label-text-alt {
-		@apply text-base;
+		@apply sm:text-base;
 	}
 </style>

@@ -223,13 +223,14 @@
 				<div class="card w-full bg-base-300">
 					<div class="card-body p-4">
 						<h3 class="card-title text-lg">Prices</h3>
-						<div class="flex flex-wrap gap-2 justify-around">
+						<div class="flex flex-col sm:flex-row gap-2 justify-evenly items-center">
 							<div class=" flex flex-col items-center">
 								<div>
 									{tokenPrice}
 								</div>
 								<div class="opacity-70">{$baseTokenSymbol} per {$mainTokenSymbol}</div>
 							</div>
+							<div class="divider divider-vertical sm:divider-horizontal" />
 							<div class="flex flex-col items-center">
 								<div>
 									{tokenRate}

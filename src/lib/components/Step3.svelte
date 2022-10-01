@@ -24,6 +24,10 @@
 		mainTokenAmount: string
 	}
 
+	interface Err {
+		reason: string
+	}
+
 	let formState: Fields = {
 		baseTokenAmount: '',
 		mainTokenAmount: ''
@@ -99,11 +103,10 @@
 			}
 			return receipt.status === 1
 		} catch (e) {
-			console.error(e)
 			addNotification({
 				type: 'error',
 				position: 'bottom-left',
-				text: `Transaction error: ${e.code || e}.`,
+				text: `Transaction error: ${(e as Err).reason || e}.`,
 				removeAfter: 5000
 			})
 			return false

@@ -11,6 +11,10 @@
 	import CheckIcon from 'virtual:icons/ri/check-line'
 	import ErrorIcon from 'virtual:icons/ri/error-warning-line'
 
+	interface Err {
+		reason: string
+	}
+
 	let inTransition = false
 
 	let baseTokenLoading = true // for initial allowance check
@@ -53,7 +57,7 @@
 			addNotification({
 				type: 'error',
 				position: 'bottom-left',
-				text: `Approval error: ${e.code || e}.`,
+				text: `Approval error: ${(e as Err).reason || e}.`,
 				removeAfter: 5000
 			})
 			return false

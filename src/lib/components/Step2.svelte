@@ -53,7 +53,7 @@
 			addNotification({
 				type: 'error',
 				position: 'bottom-left',
-				text: `Approval error: ${e}.`,
+				text: `Approval error: ${e.code || e}.`,
 				removeAfter: 5000
 			})
 			return false

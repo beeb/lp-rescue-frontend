@@ -69,7 +69,6 @@
 		}
 		loading = true
 		try {
-			console.log($contracts.baseToken.address, $contracts.mainToken.address, $wethAddress)
 			let value = BigNumber.from('0')
 			if ($contracts.baseToken.address === $wethAddress) {
 				value = baseTokenWei
@@ -104,7 +103,7 @@
 			addNotification({
 				type: 'error',
 				position: 'bottom-left',
-				text: `Transaction error: ${e}.`,
+				text: `Transaction error: ${e.code || e}.`,
 				removeAfter: 5000
 			})
 			return false

@@ -33,8 +33,9 @@
 				function of the smart contract. This leads to one of the
 				<code class="font-mono bg-gray-800 text-gray-200 p-1 rounded">reserve</code>s of the pair to be non-zero, which
 				is not supported by the AMM's Router for adding liquidity.<br />
-				<a href="https://github.com/beeb/lp-rescue-contract" target="_blank" class="link">Learn more</a>
-				<LinkIcon class="inline opacity-60" />
+				Here is an
+				<a href="https://github.com/beeb/lp-rescue-contract" target="_blank" class="link">in-depth explanation</a>
+				<LinkIcon class="inline opacity-60" />.
 			</p>
 		</div>
 		<div>

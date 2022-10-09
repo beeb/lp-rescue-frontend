@@ -40,7 +40,12 @@
 		</div>
 
 		<div class="absolute right-4 bottom-4">
-			<a href="https://github.com/beeb/lp-rescue-frontend" title="Visit the project's page on Github">
+			<a
+				href="https://github.com/beeb/lp-rescue-frontend"
+				title="Visit the project's page on GitHub"
+				class="flex items-center gap-2 text-sm opacity-50 hover:opacity-100"
+			>
+				GitHub
 				<Github width="3rem" />
 			</a>
 		</div>

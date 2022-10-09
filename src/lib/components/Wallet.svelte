@@ -26,7 +26,12 @@
 <div class="flex gap-2 lg:gap-6">
 	<div class="flex gap-1 items-center">
 		{#if $signerAddress}
-			<button type="button" class="btn btn-sm btn-circle btn-primary" on:click={() => disconnect()}>
+			<button
+				type="button"
+				class="btn btn-sm btn-circle btn-primary"
+				on:click={() => disconnect()}
+				aria-label="disconnect wallet"
+			>
 				<CloseIcon class="h-6 w-6" />
 			</button>
 			<span class="btn btn-primary btn-outline gap-2 btn-disabled bg-transparent">

@@ -6,7 +6,7 @@
 		position: 'bottom-left'
 	}
 
-	export let onRemove: Function | null = null
+	export let onRemove: (() => void) | null = null
 </script>
 
 <div

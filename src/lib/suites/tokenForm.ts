@@ -38,12 +38,8 @@ export const suite = create('form', (data) => {
 			if (ethers.utils.getAddress(data.baseToken) === weth) {
 				return
 			}
-			try {
-				const balance: BigNumber = await get(contracts).baseToken.balanceOf(get(signerAddress))
-				enforce(balance).condition((val: BigNumber) => val.gt(0))
-			} catch (err) {
-				throw err
-			}
+			const balance: BigNumber = await get(contracts).baseToken.balanceOf(get(signerAddress))
+			enforce(balance).condition((val: BigNumber) => val.gt(0))
 		})
 	})
 
@@ -75,12 +71,8 @@ export const suite = create('form', (data) => {
 			if (ethers.utils.getAddress(data.mainToken) === weth) {
 				return
 			}
-			try {
-				const balance: BigNumber = await get(contracts).mainToken.balanceOf(get(signerAddress))
-				enforce(balance).condition((val: BigNumber) => val.gt(0))
-			} catch (err) {
-				throw err
-			}
+			const balance: BigNumber = await get(contracts).mainToken.balanceOf(get(signerAddress))
+			enforce(balance).condition((val: BigNumber) => val.gt(0))
 		})
 	})
 
@@ -104,7 +96,7 @@ export const suite = create('form', (data) => {
 				return
 			}
 			await defaultEvmStores.attachContract('pair', pairAddress, pairAbi)
-			const [reserve0, reserve1, _]: [BigNumber, BigNumber, unknown] = await get(contracts).pair.getReserves()
+			const [reserve0, reserve1]: [BigNumber, BigNumber] = await get(contracts).pair.getReserves()
 			enforce([reserve0, reserve1]).anyOf(
 				enforce.condition(([res0, res1]: [BigNumber, BigNumber]) => res0.gt(0) && res1.lte(0)),
 				enforce.condition(([res0, res1]: [BigNumber, BigNumber]) => res0.lte(0) && res1.gt(0))

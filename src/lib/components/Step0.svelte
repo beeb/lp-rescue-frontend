@@ -34,7 +34,9 @@
 				<code class="font-mono bg-gray-800 text-gray-200 p-1 rounded">reserve</code>s of the pair to be non-zero, which
 				is not supported by the AMM's Router for adding liquidity.<br />
 				Here is an
-				<a href="https://github.com/beeb/lp-rescue-contract" target="_blank" class="link">in-depth explanation</a>
+				<a href="https://github.com/beeb/lp-rescue-contract" target="_blank" class="link" rel="noreferrer">
+					in-depth explanation
+				</a>
 				<LinkIcon class="inline opacity-60" />.
 			</p>
 		</div>
@@ -43,8 +45,11 @@
 			transaction, which effectively makes the LP "unstuck". For this, it uses a <a
 				href="https://github.com/beeb/lp-rescue-contract/blob/main/contracts/LPRescue.sol"
 				target="_blank"
-				class="link">custom contract</a
+				class="link"
+				rel="noreferrer"
 			>
+				custom contract
+			</a>
 			<LinkIcon class="inline opacity-60" />.
 		</div>
 		<div>First off, your wallet needs to be connected and on the right network.</div>

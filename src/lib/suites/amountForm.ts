@@ -48,7 +48,7 @@ export const suite = create('form', (data) => {
 			if (!get(contracts).pair) {
 				return
 			}
-			const [reserve0, reserve1, _]: [BigNumber, BigNumber, unknown] = await get(contracts).pair.getReserves()
+			const [reserve0, reserve1]: [BigNumber, BigNumber] = await get(contracts).pair.getReserves()
 			enforce([reserve0, reserve1]).anyOf(
 				enforce.condition(([res0, res1]: [BigNumber, BigNumber]) => res0.gt(0) && res1.lte(0)),
 				enforce.condition(([res0, res1]: [BigNumber, BigNumber]) => res0.lte(0) && res1.gt(0))

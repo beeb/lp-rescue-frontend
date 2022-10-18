@@ -11,6 +11,7 @@
 	<div class="dropdown dropdown-end">
 		<label
 			tabindex="0"
+			role="button"
 			class="btn btn-primary mb-1 gap-2 pr-3"
 			class:btn-error={!isValidChainId($activeChain)}
 			for="chain-select"
@@ -23,7 +24,12 @@
 			{/if}
 			<ArrowDownIcon />
 		</label>
-		<ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-300 rounded-3xl w-60" id="chain-select">
+		<ul
+			tabindex="0"
+			role="menu"
+			class="dropdown-content menu p-2 shadow bg-base-300 rounded-3xl w-60"
+			id="chain-select"
+		>
 			{#each Object.values(chains) as chain}
 				<li>
 					<button
@@ -50,12 +56,17 @@
 	</div>
 	{#if isValidChainId($activeChain) && Object.keys(chainData[$activeChain].amm).length > 1}
 		<div class="dropdown dropdown-end">
-			<label tabindex="0" class="btn btn-secondary mb-1 gap-2 pr-3" for="chain-select">
+			<label tabindex="0" role="button" class="btn btn-secondary mb-1 gap-2 pr-3" for="chain-select">
 				<img src={`/amm/${$activeAmm}.svg`} alt="" class="w-6 h-6" />
 				<span class="hidden lg:inline">{chainData[$activeChain].amm[$activeAmm].name}</span>
 				<ArrowDownIcon />
 			</label>
-			<ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-300 rounded-3xl w-60" id="chain-select">
+			<ul
+				tabindex="0"
+				role="menu"
+				class="dropdown-content menu p-2 shadow bg-base-300 rounded-3xl w-60"
+				id="chain-select"
+			>
 				{#each Object.entries(chainData[$activeChain].amm) as [ammKey, amm]}
 					<li>
 						<button

@@ -1,5 +1,5 @@
 <script lang="ts">
-	export let step: number = 0
+	export let step = 0
 </script>
 
 <ul class="steps steps-horizontal">

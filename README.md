@@ -13,6 +13,9 @@ a new issue](https://github.com/beeb/lp-rescue-frontend/issues/new).
 
 ## Developing
 
+**NOTE**: currently, using `pnpm run dev` doesn't work due to an indirect dependency to `rxjs` from `@web3-onboard`.
+Use `npm install` and `npm run dev` for the moment.
+
 Once you've installed dependencies with `pnpm install`, start a development server:
 
 ```bash

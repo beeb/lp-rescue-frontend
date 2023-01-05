@@ -3,6 +3,7 @@ import { ethers } from 'ethers'
 import { default as Onboard } from '@web3-onboard/core'
 import injectedModule from '@web3-onboard/injected-wallets'
 import walletConnectModule from '@web3-onboard/walletconnect'
+import { PUBLIC_DEFAULT_CHAIN } from '$env/static/public'
 
 export const chains: Record<number, Chain> = {
 	56: {
@@ -61,7 +62,7 @@ export const chainData: Record<number, ChainData> = {
 type AllChainData = typeof chainData
 export type SupportedAmm = keyof AllChainData[keyof AllChainData]['amm']
 
-export const defaultChain: SupportedChain = parseInt(import.meta.env.VITE_DEFAULT_CHAIN || '56') as SupportedChain
+export const defaultChain: SupportedChain = parseInt(PUBLIC_DEFAULT_CHAIN || '56') as SupportedChain
 
 export const defaultProvider = new ethers.providers.JsonRpcProvider(
 	chains[defaultChain].rpcUrl || 'https://bsc-dataseed.binance.org'

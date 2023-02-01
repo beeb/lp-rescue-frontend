@@ -14,16 +14,16 @@
 
 <Notifications item={Notification}>
 	<div class="relative">
-		<div class="flex flex-col w-full min-h-screen justify-between items-center gap-10 pb-12">
+		<div class="flex min-h-screen w-full flex-col items-center justify-between gap-10 pb-12">
 			<div class="w-full">
 				<TitleBar />
 			</div>
-			<div class="flex-grow w-full flex flex-col justify-center items-center gap-10">
+			<div class="flex w-full flex-grow flex-col items-center justify-center gap-10">
 				<div>
 					<Steps step={$step} />
 				</div>
 
-				<div class="grid grid-cols-1 w-10/12 max-w-2xl">
+				<div class="grid w-10/12 max-w-2xl grid-cols-1">
 					{#if $step == 0}
 						<Step0 />
 					{:else if $step == 1}

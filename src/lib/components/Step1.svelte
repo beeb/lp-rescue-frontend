@@ -81,12 +81,12 @@
 </script>
 
 <div
-	class="col-start-1 row-start-1 w-full card bg-base-200 shadow-lg"
+	class="card col-start-1 row-start-1 w-full bg-base-200 shadow-lg"
 	in:fly={{ x: 500, duration: 500 }}
 	out:fly={{ x: -500, duration: 500 }}
 >
 	<div class="card-body gap-6">
-		<h2 class="card-title text-3xl font-comic">Choose Tokens</h2>
+		<h2 class="card-title font-comic text-3xl">Choose Tokens</h2>
 		<div>Now, please choose the two tokens of the liquidity pool.</div>
 		{#if $signerAddress && chains[$activeChain]}
 			<form on:submit|preventDefault class="flex flex-col gap-6">
@@ -115,12 +115,12 @@
 							id="base-token"
 							type="text"
 							placeholder="0x..."
-							class={`input input-bordered sm:input-lg flex-auto min-w-0 ${cn('baseToken')}`}
+							class={`input-bordered input min-w-0 flex-auto sm:input-lg ${cn('baseToken')}`}
 							bind:value={formState.baseToken}
 							on:input={() => handleChange('baseToken')}
 						/>
 						<select
-							class="select select-bordered sm:select-lg pr-10"
+							class="select-bordered select pr-10 sm:select-lg"
 							on:change|preventDefault={(e) => onSelectBaseToken(e)}
 						>
 							<option disabled selected>Common</option>
@@ -153,14 +153,14 @@
 					<input
 						type="text"
 						placeholder="0x..."
-						class={`input input-bordered sm:input-lg flex-auto ${cn('mainToken')}`}
+						class={`input-bordered input flex-auto sm:input-lg ${cn('mainToken')}`}
 						bind:value={formState.mainToken}
 						on:input={() => handleChange('mainToken')}
 					/>
 				</div>
 			</form>
 		{:else}
-			<div class="alert alert-error shadow-lg justify-center">
+			<div class="alert alert-error justify-center shadow-lg">
 				<div>
 					<ErrorIcon /> Use the controls in the top-right to connect and set a valid network.
 				</div>
@@ -170,10 +170,10 @@
 </div>
 
 {#if !inTransition}
-	<div class="col-start-1 row-start-2 flex gap-6 justify-center mt-6">
+	<div class="col-start-1 row-start-2 mt-6 flex justify-center gap-6">
 		<button
 			type="button"
-			class="btn btn-primary btn-outline gap-1 pl-3"
+			class="btn-outline btn-primary btn gap-1 pl-3"
 			on:click={() => {
 				inTransition = true
 				$step--
@@ -183,7 +183,7 @@
 		</button>
 		<button
 			type="button"
-			class="btn btn-primary gap-1 pr-3"
+			class="btn-primary btn gap-1 pr-3"
 			on:click={() => {
 				inTransition = true
 				$step++

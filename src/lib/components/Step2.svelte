@@ -116,12 +116,12 @@
 </script>
 
 <div
-	class="col-start-1 row-start-1 w-full card bg-base-200 shadow-lg"
+	class="card col-start-1 row-start-1 w-full bg-base-200 shadow-lg"
 	in:fly={{ x: 500, duration: 500 }}
 	out:fly={{ x: -500, duration: 500 }}
 >
 	<div class="card-body gap-6">
-		<h2 class="card-title text-3xl font-comic">Approve Transfer</h2>
+		<h2 class="card-title font-comic text-3xl">Approve Transfer</h2>
 		<div>
 			In order for the custom LP+Rescue contract to add liquidity, you need to allow it to transfer tokens from your
 			wallet to the LP contract. This process is known as "approval". Please click the buttons below if they indicate
@@ -144,7 +144,7 @@
 					<button
 						type="button"
 						id="approve-base-token"
-						class={`btn btn-lg w-full gap-2 ${baseTokenApproved ? '!btn-success opacity-60' : 'btn-info'}`}
+						class={`btn-lg btn w-full gap-2 ${baseTokenApproved ? '!btn-success opacity-60' : 'btn-info'}`}
 						disabled={baseTokenApproved || baseTokenLoading}
 						on:click={() => approveToken($contracts.baseToken, $contracts.LPRescue.address)}
 					>
@@ -170,7 +170,7 @@
 					<button
 						type="button"
 						id="approve-main-token"
-						class={`btn btn-lg w-full gap-2 ${mainTokenApproved ? '!btn-success opacity-60' : 'btn-info'}`}
+						class={`btn-lg btn w-full gap-2 ${mainTokenApproved ? '!btn-success opacity-60' : 'btn-info'}`}
 						disabled={mainTokenApproved || mainTokenLoading}
 						on:click={() => approveToken($contracts.mainToken, $contracts.LPRescue.address)}
 					>
@@ -193,7 +193,7 @@
 				</div>
 			{/if}
 		{:else}
-			<div class="alert alert-error shadow-lg justify-center">
+			<div class="alert alert-error justify-center shadow-lg">
 				<div>
 					<ErrorIcon /> Use the controls in the top-right to connect and set a valid network.
 				</div>
@@ -203,10 +203,10 @@
 </div>
 
 {#if !inTransition}
-	<div class="col-start-1 row-start-2 flex gap-6 justify-center mt-6">
+	<div class="col-start-1 row-start-2 mt-6 flex justify-center gap-6">
 		<button
 			type="button"
-			class="btn btn-primary btn-outline gap-1 pl-3"
+			class="btn-outline btn-primary btn gap-1 pl-3"
 			on:click={() => {
 				inTransition = true
 				$step--
@@ -216,7 +216,7 @@
 		</button>
 		<button
 			type="button"
-			class="btn btn-primary gap-1 pr-3"
+			class="btn-primary btn gap-1 pr-3"
 			on:click={() => {
 				inTransition = true
 				$step++

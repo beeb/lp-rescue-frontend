@@ -12,7 +12,7 @@ const config: UserConfig = {
 		svg({
 			includePaths: ['./src/lib/assets/']
 		})
-	],
+	]
 }
 
 export default config

@@ -158,19 +158,19 @@
 </script>
 
 <div
-	class="col-start-1 row-start-1 w-full card bg-base-200 shadow-lg"
+	class="card col-start-1 row-start-1 w-full bg-base-200 shadow-lg"
 	in:fly={{ x: 500, duration: 500 }}
 	out:fly={{ x: -500, duration: 500 }}
 >
 	<div class="card-body gap-6">
-		<h2 class="card-title text-3xl font-comic">Add Liquidity</h2>
+		<h2 class="card-title font-comic text-3xl">Add Liquidity</h2>
 		<div>
 			You can now use the form below to add liquidity to the pair, in exactly the same way as the Dex offers. Ignore the
 			tokens already in the LP (the contract will deduct them) and check the calculations below to add the appropriate
 			amount of liquidity.
 		</div>
 		{#if $signerAddress && chains[$activeChain]}
-			<form on:submit|preventDefault class="flex flex-col gap-6 items-center">
+			<form on:submit|preventDefault class="flex flex-col items-center gap-6">
 				<div class="form-control w-full">
 					<label class="label" for="base-token-amount">
 						<span class="label-text sm:text-lg">Base Token Amount</span>
@@ -189,15 +189,15 @@
 							id="base-token-amount"
 							type="text"
 							placeholder="0.0"
-							class={`input input-bordered sm:input-lg flex-auto min-w-0 ${cn('baseTokenAmount')}`}
+							class={`input-bordered input min-w-0 flex-auto sm:input-lg ${cn('baseTokenAmount')}`}
 							bind:value={formState.baseTokenAmount}
 							on:input={() => handleChange('baseToken')}
 						/>
 						<span class="pr-6">{$baseTokenSymbol}</span>
 					</label>
 				</div>
-				<div class="text-3xl font-comic">+</div>
-				<div class="form-control w-full -mt-6">
+				<div class="font-comic text-3xl">+</div>
+				<div class="form-control -mt-6 w-full">
 					<label class="label" for="main-token-amount">
 						<span class="label-text sm:text-lg">Main Token Amount</span>
 						{#if mainTokenValidating}
@@ -215,7 +215,7 @@
 							id="main-token-amount"
 							type="text"
 							placeholder="0.0"
-							class={`input input-bordered sm:input-lg flex-auto min-w-0 ${cn('mainTokenAmount')}`}
+							class={`input-bordered input min-w-0 flex-auto sm:input-lg ${cn('mainTokenAmount')}`}
 							bind:value={formState.mainTokenAmount}
 							on:input={() => handleChange('mainToken')}
 						/>
@@ -225,14 +225,14 @@
 				<div class="card w-full bg-base-300">
 					<div class="card-body p-4">
 						<h3 class="card-title sm:text-lg">Prices</h3>
-						<div class="flex flex-col sm:flex-row gap-2 justify-evenly items-center">
+						<div class="flex flex-col items-center justify-evenly gap-2 sm:flex-row">
 							<div class=" flex flex-col items-center">
 								<div>
 									{tokenPrice}
 								</div>
 								<div class="opacity-70">{$baseTokenSymbol} per {$mainTokenSymbol}</div>
 							</div>
-							<div class="divider divider-vertical sm:divider-horizontal my-1 sm:my-0 mx-0 sm:mx-1" />
+							<div class="divider divider-vertical my-1 mx-0 sm:my-0 sm:mx-1 sm:divider-horizontal" />
 							<div class="flex flex-col items-center">
 								<div>
 									{tokenRate}
@@ -245,7 +245,7 @@
 				<div class="card-actions w-full justify-end">
 					<button
 						type="button"
-						class="btn btn-lg btn-info gap-2 font-comic text-xl uppercase"
+						class="btn-info btn-lg btn gap-2 font-comic text-xl uppercase"
 						disabled={!valid || loading}
 						on:click={() => rescueLp()}
 					>
@@ -257,7 +257,7 @@
 				</div>
 			</form>
 		{:else}
-			<div class="alert alert-error shadow-lg justify-center">
+			<div class="alert alert-error justify-center shadow-lg">
 				<div>
 					<ErrorIcon /> Use the controls in the top-right to connect and set a valid network.
 				</div>
@@ -267,10 +267,10 @@
 </div>
 
 {#if !inTransition}
-	<div class="col-start-1 row-start-2 flex gap-6 justify-center mt-6">
+	<div class="col-start-1 row-start-2 mt-6 flex justify-center gap-6">
 		<button
 			type="button"
-			class="btn btn-primary btn-outline gap-1 pl-3"
+			class="btn-outline btn-primary btn gap-1 pl-3"
 			on:click={() => {
 				inTransition = true
 				$step--

@@ -10,7 +10,7 @@
 </script>
 
 <div
-	class="toast flex max-w-[90%] min-w-0"
+	class="toast flex min-w-0 max-w-[90%]"
 	class:toast-start={notification.position === 'top-left' || notification.position === 'bottom-left'}
 	class:toast-center={notification.position === 'top-center' || notification.position === 'bottom-center'}
 	class:toast-end={notification.position === 'top-right' || notification.position == 'bottom-right'}
@@ -24,13 +24,13 @@
 		class:alert-warning={notification.type === 'warning'}
 		class:alert-info={notification.type === 'info'}
 	>
-		<div class="overflow-hidden max-w-full">
+		<div class="max-w-full overflow-hidden">
 			<span>{@html notification.text}</span>
 		</div>
 		<div class="flex-none">
 			<button
 				type="button"
-				class="btn btn-sm btn-square btn-ghost"
+				class="btn-ghost btn-square btn-sm btn"
 				on:click={() => {
 					onRemove && onRemove()
 				}}>✕</button

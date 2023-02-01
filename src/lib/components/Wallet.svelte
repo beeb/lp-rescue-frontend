@@ -24,17 +24,17 @@
 </script>
 
 <div class="flex gap-2 lg:gap-6">
-	<div class="flex gap-1 items-center">
+	<div class="flex items-center gap-1">
 		{#if $signerAddress}
 			<button
 				type="button"
-				class="btn btn-sm btn-circle btn-primary"
+				class="btn-primary btn-sm btn-circle btn"
 				on:click={() => disconnect()}
 				aria-label="disconnect wallet"
 			>
 				<CloseIcon class="h-6 w-6" />
 			</button>
-			<span class="btn btn-primary btn-outline gap-2 btn-disabled bg-transparent">
+			<span class="btn-outline btn-disabled btn-primary btn gap-2 bg-transparent">
 				{addressEllipsis}
 			</span>
 		{:else if chains[$activeChain]}

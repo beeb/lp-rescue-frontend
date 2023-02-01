@@ -17,21 +17,21 @@
 </script>
 
 <div
-	class="col-start-1 row-start-1 w-full card bg-base-200 shadow-lg"
+	class="card col-start-1 row-start-1 w-full bg-base-200 shadow-lg"
 	in:fly={{ x: 500, duration: 500 }}
 	out:fly={{ x: -500, duration: 500 }}
 >
 	<div class="card-body gap-6">
-		<h2 class="card-title text-3xl font-comic">Before we begin...</h2>
+		<h2 class="card-title font-comic text-3xl">Before we begin...</h2>
 		<div>
-			<h3 class="text-xl mb-2">What is <strong>LP+Rescue?</strong></h3>
+			<h3 class="mb-2 text-xl">What is <strong>LP+Rescue?</strong></h3>
 			<p>
 				<strong>LP+Rescue</strong> is a tool you can use when a Liquidity Pool (LP) has been created on an AMM (Uniswap
 				v2, Pancakeswap) but no liquidity can be added to it. Most commonly, some malicious actor makes the contract
 				"stuck" by adding a tiny amount of one of the tokens (usually WETH or WBNB) and calls the
-				<code class="font-mono bg-gray-800 text-gray-200 p-1 rounded">sync</code>
+				<code class="rounded bg-gray-800 p-1 font-mono text-gray-200">sync</code>
 				function of the smart contract. This leads to one of the
-				<code class="font-mono bg-gray-800 text-gray-200 p-1 rounded">reserve</code>s of the pair to be non-zero, which
+				<code class="rounded bg-gray-800 p-1 font-mono text-gray-200">reserve</code>s of the pair to be non-zero, which
 				is not supported by the AMM's Router for adding liquidity.<br />
 				Here is an
 				<a href="https://github.com/beeb/lp-rescue-contract" target="_blank" class="link" rel="noreferrer">
@@ -54,13 +54,13 @@
 		</div>
 		<div>First off, your wallet needs to be connected and on the right network.</div>
 		{#if $signerAddress && chains[$activeChain]}
-			<div class="alert alert-success shadow-lg justify-center">
+			<div class="alert alert-success justify-center shadow-lg">
 				<div>
 					<CheckIcon /> Everything seems correct
 				</div>
 			</div>
 		{:else}
-			<div class="alert alert-info shadow-lg justify-center">
+			<div class="alert alert-info justify-center shadow-lg">
 				<div>
 					<InfoIcon /> Use the controls in the top-right to connect and set a valid network.
 				</div>
@@ -94,10 +94,10 @@
 </div>
 
 {#if !inTransition}
-	<div class="col-start-1 row-start-2 flex gap-6 justify-center mt-6">
+	<div class="col-start-1 row-start-2 mt-6 flex justify-center gap-6">
 		<button
 			type="button"
-			class="btn btn-primary gap-1 pr-3"
+			class="btn-primary btn gap-1 pr-3"
 			on:click={() => {
 				inTransition = true
 				$step++

@@ -89,5 +89,6 @@ export const onboard = Onboard({
 		mobile: {
 			enabled: false
 		}
-	}
+	},
+	theme: 'dark'
 })

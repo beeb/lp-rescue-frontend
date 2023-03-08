@@ -1,11 +1,10 @@
-import type { Chain } from '@web3-onboard/common'
 import { ethers } from 'ethers'
 import { default as Onboard } from '@web3-onboard/core'
 import injectedModule from '@web3-onboard/injected-wallets'
 import walletConnectModule from '@web3-onboard/walletconnect'
 import { PUBLIC_DEFAULT_CHAIN } from '$env/static/public'
 
-export const chains: Record<number, Chain> = {
+export const chains: Record<number, any> = {
 	56: {
 		id: '0x38',
 		token: 'BNB',

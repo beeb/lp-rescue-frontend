@@ -4,7 +4,7 @@ specifiers:
   '@esbuild-plugins/node-globals-polyfill': ^0.2.3
   '@iconify-json/ri': ^1.1.5
   '@poppanator/sveltekit-svg': ^2.1.2
-  '@sveltejs/adapter-auto': ^1.0.3
+  '@sveltejs/adapter-auto': ^2.0.0
   '@sveltejs/kit': ^1.11.0
   '@tailwindcss/typography': ^0.5.9
   '@typescript-eslint/eslint-plugin': ^5.54.1
@@ -31,7 +31,7 @@ specifiers:
   theme-change: ^2.5.0
   tslib: ^2.5.0
   typescript: ^4.9.5
-  unplugin-icons: ^0.14.15
+  unplugin-icons: ^0.15.3
   vest: ^4.6.8
   vite: ^4.1.4
 
@@ -39,7 +39,7 @@ devDependencies:
   '@esbuild-plugins/node-globals-polyfill': 0.2.3
   '@iconify-json/ri': 1.1.5
   '@poppanator/sveltekit-svg': 2.1.2_svelte@3.55.1+vite@4.1.4
-  '@sveltejs/adapter-auto': 1.0.3_@sveltejs+kit@1.11.0
+  '@sveltejs/adapter-auto': 2.0.0_@sveltejs+kit@1.11.0
   '@sveltejs/kit': 1.11.0_svelte@3.55.1+vite@4.1.4
   '@tailwindcss/typography': 0.5.9_tailwindcss@3.2.7
   '@typescript-eslint/eslint-plugin': 5.54.1_mlk7dnz565t663n4razh6a6v6i
@@ -66,7 +66,7 @@ devDependencies:
   theme-change: 2.5.0
   tslib: 2.5.0
   typescript: 4.9.5
-  unplugin-icons: 0.14.15
+  unplugin-icons: 0.15.3
   vest: 4.6.8
   vite: 4.1.4
 
@@ -1358,8 +1358,8 @@ packages:
       '@stablelib/wipe': 1.0.1
     dev: true
 
-  /@sveltejs/adapter-auto/1.0.3_@sveltejs+kit@1.11.0:
-    resolution: {integrity: sha512-hc7O12YQqvZ1CD4fo1gMJuPzBZvuoG5kwxb2RRoz4fVoB8B2vuPO2cY751Ln0G6T/HMrAf8kCqw6Pg+wbxcstw==}
+  /@sveltejs/adapter-auto/2.0.0_@sveltejs+kit@1.11.0:
+    resolution: {integrity: sha512-b+gkHFZgD771kgV3aO4avHFd7y1zhmMYy9i6xOK7m/rwmwaRO8gnF5zBc0Rgca80B2PMU1bKNxyBTHA14OzUAQ==}
     peerDependencies:
       '@sveltejs/kit': ^1.0.0
     dependencies:
@@ -5135,11 +5135,11 @@ packages:
       busboy: 1.6.0
     dev: true
 
-  /unplugin-icons/0.14.15:
-    resolution: {integrity: sha512-J6YBA+fUzVM2IZPXCK3Pnk36jYVwQ6lkjRgOnZaXNIxpMDsmwDqrE1AGJ0zUbfuEoOa90OBGc0OPfN1r+qlSIQ==}
+  /unplugin-icons/0.15.3:
+    resolution: {integrity: sha512-YWgJqv5AahrokeOnta8uX/m1damZA6Rf6zPClgHg2Fa/45iyOe3Lj+Wn/Ba+CSsq9yBffn17YfKfJNyWCNZPvw==}
     peerDependencies:
       '@svgr/core': '>=5.5.0'
-      '@vue/compiler-sfc': ^3.0.2
+      '@vue/compiler-sfc': ^3.0.2 || ^2.7.0
       vue-template-compiler: ^2.6.12
       vue-template-es2015-compiler: ^1.9.0
     peerDependenciesMeta:

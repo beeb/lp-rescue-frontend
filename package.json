@@ -24,7 +24,7 @@
 		"@web3-onboard/core": "^2.15.4",
 		"@web3-onboard/injected-wallets": "^2.8.1",
 		"@web3-onboard/walletconnect": "^2.3.1",
-		"autoprefixer": "^10.4.13",
+		"autoprefixer": "^10.4.14",
 		"daisyui": "^2.51.3",
 		"eslint": "^8.35.0",
 		"eslint-config-prettier": "^8.7.0",
@@ -34,7 +34,7 @@
 		"prettier": "^2.8.4",
 		"prettier-plugin-svelte": "^2.9.0",
 		"prettier-plugin-tailwindcss": "^0.2.4",
-		"svelte": "^3.55.1",
+		"svelte": "^3.56.0",
 		"svelte-check": "^3.1.0",
 		"svelte-ethers-store": "^2.5.12",
 		"svelte-notifications": "^0.9.98",
@@ -44,7 +44,7 @@
 		"tslib": "^2.5.0",
 		"typescript": "^4.9.5",
 		"unplugin-icons": "^0.15.3",
-		"vest": "^4.6.8",
+		"vest": "^4.6.9",
 		"vite": "^4.1.4"
 	},
 	"type": "module"

@@ -3,6 +3,9 @@ import { default as Onboard } from '@web3-onboard/core'
 import injectedModule from '@web3-onboard/injected-wallets'
 import walletConnectModule from '@web3-onboard/walletconnect'
 import { PUBLIC_DEFAULT_CHAIN } from '$env/static/public'
+import { Buffer } from 'buffer'
+
+globalThis.Buffer = Buffer // polyfill needed for walletconnect
 
 // temporarily use the `any` type until web3-onboard fixes their stuff, then we can use the `Chain` type again.
 export const chains: Record<number, any> = {

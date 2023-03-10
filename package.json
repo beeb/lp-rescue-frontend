@@ -12,7 +12,6 @@
 		"format": "prettier --plugin-search-dir . --write ."
 	},
 	"devDependencies": {
-		"@esbuild-plugins/node-globals-polyfill": "^0.2.3",
 		"@iconify-json/ri": "^1.1.5",
 		"@poppanator/sveltekit-svg": "^2.1.2",
 		"@sveltejs/adapter-auto": "^2.0.0",
@@ -24,6 +23,7 @@
 		"@web3-onboard/injected-wallets": "^2.8.1",
 		"@web3-onboard/walletconnect": "^2.3.1",
 		"autoprefixer": "^10.4.14",
+		"buffer": "^6.0.3",
 		"daisyui": "^2.51.3",
 		"esbuild": "^0.17.11",
 		"eslint": "^8.35.0",

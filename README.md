@@ -13,13 +13,10 @@ a new issue](https://github.com/beeb/lp-rescue-frontend/issues/new).
 
 ## Developing
 
-Once you've installed dependencies with `pnpm install`, start a development server:
+Once you've installed dependencies with `npm install`, start a development server:
 
 ```bash
-pnpm run dev
-
-# or start the server and open the app in a new browser tab
-pnpm run dev -- --open
+npm run dev
 ```
 
 ## Building
@@ -27,7 +24,7 @@ pnpm run dev -- --open
 To create a production version of this app:
 
 ```bash
-pnpm run build
+npm run build
 ```
 
-You can preview the production build with `pnpm run preview`.
+You can preview the production build with `npm run preview`.

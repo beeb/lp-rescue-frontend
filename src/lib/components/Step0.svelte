@@ -43,7 +43,7 @@
 		<div>
 			This tool replaces the AMM Router and allows to re-establish the correct balances and reserves in a single
 			transaction, which effectively makes the LP "unstuck". For this, it uses a <a
-				href="https://github.com/beeb/lp-rescue-contract/blob/main/contracts/LPRescue.sol"
+				href="https://github.com/beeb/lp-rescue-contract/blob/main/src/LPRescue.sol"
 				target="_blank"
 				class="link"
 				rel="noreferrer"

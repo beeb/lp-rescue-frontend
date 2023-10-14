@@ -3,6 +3,7 @@
   import { AppBar, AppShell, LightSwitch } from '@skeletonlabs/skeleton'
   import Logo from '$lib/assets/logo-halftone.svg?component'
   import Github from '$lib/assets/github.svg?component'
+  import Wallet from './wallet.svelte'
 </script>
 
 <AppShell regionPage="relative" slotPageHeader="sticky top-0 z-10" slotFooter="m-4 flex justify-end">
@@ -13,6 +14,7 @@
       </svelte:fragment>
       <svelte:fragment slot="trail">
         <LightSwitch />
+        <Wallet />
       </svelte:fragment>
     </AppBar>
   </svelte:fragment>

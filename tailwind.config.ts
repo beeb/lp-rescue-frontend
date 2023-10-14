@@ -14,7 +14,7 @@ const config = {
 	},
 	plugins: [
 		skeleton({
-			themes: { preset: [{ name: 'wintry', enhancements: true }] },
+			themes: { preset: [{ name: 'wintry' }] },
 		}),
 	],
 } satisfies Config

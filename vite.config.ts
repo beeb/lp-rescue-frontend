@@ -1,7 +1,27 @@
+import svg from '@poppanator/sveltekit-svg'
 import { sveltekit } from '@sveltejs/kit/vite'
 import { defineConfig } from 'vite'
 import { purgeCss } from 'vite-plugin-tailwind-purgecss'
 
 export default defineConfig({
-	plugins: [sveltekit(), purgeCss()],
+	plugins: [
+		sveltekit(),
+		svg({
+			includePaths: ['./src/lib/assets/'],
+			svgoOptions: {
+				multipass: false,
+				plugins: [
+					{
+						name: 'preset-default',
+						params: {
+							overrides: {
+								removeViewBox: false,
+							},
+						},
+					},
+				],
+			},
+		}),
+		purgeCss(),
+	],
 })

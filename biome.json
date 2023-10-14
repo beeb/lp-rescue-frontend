@@ -24,7 +24,8 @@
 			".env",
 			".env.*",
 			"pnpm-lock.yaml",
-			"src/app.d.ts"
+			"src/app.d.ts",
+			"src/*.svelte"
 		]
 	}
 }

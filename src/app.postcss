@@ -1,0 +1,35 @@
+/* Write your global styles here, in PostCSS syntax */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'Metropolis';
+  src: url('/fonts/Metropolis-Regular.woff2') format('woff2'), url('/fonts/Metropolis-Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Metropolis';
+  src: url('/fonts/Metropolis-Bold.woff2') format('woff2'), url('/fonts/Metropolis-Bold.woff') format('woff');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'ccsignlanguage';
+  src: url('/fonts/ccsignlanguage-italic.woff2') format('woff2'),
+    url('/fonts/ccsignlanguage-italic.woff') format('woff');
+  font-display: swap;
+  font-style: normal;
+  font-weight: 400;
+  font-stretch: normal;
+}
+
+:root [data-theme='wintry'] {
+  --theme-font-family-heading: 'ccsignlanguage', sans-serif;
+  --theme-font-family-base: 'Metropolis', sans-serif;
+}

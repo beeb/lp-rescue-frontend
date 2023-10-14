@@ -19,7 +19,10 @@
                 nodePackages.pnpm
               ];
               dotenv.enable = true;
-              languages.javascript.enable = true;
+              languages.javascript = {
+                enable = true;
+                package = pkgs.nodejs_18;
+              };
               languages.typescript.enable = true;
             })
           ];

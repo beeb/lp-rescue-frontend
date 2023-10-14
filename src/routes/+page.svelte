@@ -1,4 +1,10 @@
-<div class="container mx-auto p-8 space-y-8 text-center">
-  <h1 class="h1">Hello Skeleton</h1>
-  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+<script>
+  import { Stepper } from '@skeletonlabs/skeleton'
+  import Step1 from './step1.svelte'
+</script>
+
+<div class="max-w-2xl mx-auto card p-4">
+  <Stepper>
+    <Step1 />
+  </Stepper>
 </div>

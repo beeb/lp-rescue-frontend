@@ -1,4 +1,5 @@
 import '@poppanator/sveltekit-svg/dist/svg'
+import 'unplugin-icons/types/svelte'
 
 // See https://kit.svelte.dev/docs/types#app
 // for information about these interfaces
